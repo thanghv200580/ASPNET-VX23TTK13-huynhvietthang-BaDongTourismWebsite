@@ -60,6 +60,11 @@ migrations/**
 secrets.json
 appsettings.*.Local.json
 
+# Docker
+docker/.env
+docker-compose.override.yml
+*.env.local
+
 # JetBrains Rider caches
 .idea/
 /.idea
