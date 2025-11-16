@@ -4,10 +4,10 @@
 
 ## 👥 Thông tin sinh viên
 
-- **Họ tên**: [Tên sinh viên]
-- **MSSV**: [Mã số sinh viên]
+- **Họ tên**: 
+- **MSSV**: 
 - **Lớp**: VX23TTK13
-- **Giảng viên hướng dẫn**: [Tên giảng viên]
+- **Giảng viên hướng dẫn**:
 
 ## 📋 Mô tả đồ án
 
