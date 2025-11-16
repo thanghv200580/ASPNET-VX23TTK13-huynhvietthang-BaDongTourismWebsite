@@ -2,6 +2,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\BaDongTourismWebsite.BLL\BaDongTourismWebsite.BLL.csproj" />
+      <ProjectReference Include="..\BaDongTourismWebsite.DAL\BaDongTourismWebsite.DAL.csproj" />
     </ItemGroup>
 
     <ItemGroup>

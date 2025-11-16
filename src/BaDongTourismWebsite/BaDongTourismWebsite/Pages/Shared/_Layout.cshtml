@@ -1,45 +1,90 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - BaDongTourismWebsite</title>
+    <title>@ViewData["Title"] - Du Lịch Ba Đồng</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/BaDongTourismWebsite.styles.css" asp-append-version="true"/>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">BaDongTourismWebsite</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand fw-bold text-primary" asp-area="" asp-page="/Index">
+                <i class="fas fa-umbrella-beach me-2"></i>Du Lịch Ba Đồng
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        <a class="nav-link" asp-page="/Index"><i class="fas fa-home me-1"></i>Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        <a class="nav-link" asp-page="/Destinations/Index"><i class="fas fa-map-marked-alt me-1"></i>Điểm du lịch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/Tours/Index"><i class="fas fa-route me-1"></i>Tours</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/About"><i class="fas fa-info-circle me-1"></i>Về chúng tôi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/Contact"><i class="fas fa-envelope me-1"></i>Liên hệ</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
 
-<footer class="border-top footer text-muted">
+@RenderBody()
+
+<footer class="footer">
     <div class="container">
-        &copy; 2025 - BaDongTourismWebsite - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h5><i class="fas fa-umbrella-beach me-2"></i>Du Lịch Ba Đồng</h5>
+                <p>Khám phá vẻ đẹp thiên nhiên và văn hóa Ba Đồng cùng chúng tôi. Trải nghiệm du lịch đáng nhớ với dịch vụ chuyên nghiệp.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5>Liên kết nhanh</h5>
+                <ul class="list-unstyled">
+                    <li><a asp-page="/Index">Trang chủ</a></li>
+                    <li><a asp-page="/Destinations/Index">Điểm du lịch</a></li>
+                    <li><a asp-page="/Tours/Index">Tours</a></li>
+                    <li><a asp-page="/About">Về chúng tôi</a></li>
+                    <li><a asp-page="/Contact">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h5>Liên hệ</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-map-marker-alt me-2"></i>Xã Ba Đồng, Quảng Bình</li>
+                    <li><i class="fas fa-phone me-2"></i>0123 456 789</li>
+                    <li><i class="fas fa-envelope me-2"></i>info@badong-tourism.vn</li>
+                    <li><i class="fas fa-clock me-2"></i>8:00 - 18:00 (Thứ 2 - CN)</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="bg-light">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p class="mb-0">&copy; 2025 Du Lịch Ba Đồng. All rights reserved.</p>
+            </div>
+        </div>
     </div>
 </footer>
 
@@ -48,5 +93,6 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
