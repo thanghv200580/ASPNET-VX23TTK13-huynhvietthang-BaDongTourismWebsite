@@ -1,0 +1,75 @@
+@page
+@model BaDongTourismWebsite.Pages.Destinations.IndexModel
+@{
+    ViewData["Title"] = "Điểm Du Lịch";
+}
+
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="section-title mb-3">Điểm Du Lịch</h1>
+            <p class="text-muted">Khám phá những địa điểm du lịch tuyệt vời tại Ba Đồng</p>
+        </div>
+        <div class="col-md-4">
+            <form method="get" class="d-flex">
+                <input class="form-control me-2" type="search" name="search" value="@Model.SearchTerm" placeholder="Tìm kiếm điểm đến...">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.SearchTerm))
+    {
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>Kết quả tìm kiếm cho: <strong>@Model.SearchTerm</strong>
+        </div>
+    }
+
+    @if (Model.Destinations.Any())
+    {
+        <div class="row g-4">
+            @foreach (var destination in Model.Destinations)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card destination-card">
+                        <div class="position-relative">
+                            <img src="@(destination.MainImage ?? "/images/placeholder-destination.jpg")" 
+                                 class="destination-image" 
+                                 alt="@destination.Name">
+                            @if (destination.IsFeatured)
+                            {
+                                <span class="badge-category">Nổi bật</span>
+                            }
+                        </div>
+                        <div class="card-body">
+                            <h5 class="destination-title">@destination.Name</h5>
+                            <p class="destination-location">
+                                <i class="fas fa-map-marker-alt me-1"></i>@destination.Location, @destination.Province
+                            </p>
+                            <p class="card-text">@(destination.ShortDescription ?? (destination.Description != null && destination.Description.Length > 100 ? destination.Description.Substring(0, 100) + "..." : destination.Description))</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="destination-rating">
+                                    <i class="fas fa-star"></i> @destination.Rating.ToString("0.0")
+                                </span>
+                                <a asp-page="/Destinations/Details" asp-route-id="@destination.Id" class="btn btn-outline-custom btn-sm">
+                                    Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-map-marked-alt fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">Không tìm thấy điểm du lịch nào</h4>
+            <p class="text-muted">Vui lòng thử lại với từ khóa khác.</p>
+        </div>
+    }
+</div>
+
