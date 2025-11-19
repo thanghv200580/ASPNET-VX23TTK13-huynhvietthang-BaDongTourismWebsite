@@ -7,6 +7,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// Add Session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Add DbContext with PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(
@@ -15,6 +23,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Unit of Work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Add Services
+builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IAuthService, BaDongTourismWebsite.BLL.Services.AuthService>();
+builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IDestinationService, BaDongTourismWebsite.BLL.Services.DestinationService>();
 
 // Add DbSeeder
 builder.Services.AddScoped<DbSeeder>();
@@ -40,6 +52,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthorization();
 
 app.MapStaticAssets();
