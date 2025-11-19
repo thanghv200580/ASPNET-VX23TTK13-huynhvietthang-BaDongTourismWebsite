@@ -10,6 +10,14 @@ public class DestinationRepository : Repository<Destination>, IDestinationReposi
     {
     }
     
+    public async Task<IEnumerable<Destination>> GetAllDestinationsAsync()
+    {
+        return await _dbSet
+            .Include(d => d.Category)
+            .OrderByDescending(d => d.CreatedDate)
+            .ToListAsync();
+    }
+    
     public async Task<IEnumerable<Destination>> GetFeaturedDestinationsAsync(int count = 6)
     {
         return await _dbSet
