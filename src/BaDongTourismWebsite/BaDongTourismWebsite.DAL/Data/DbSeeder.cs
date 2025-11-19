@@ -183,6 +183,167 @@ public class DbSeeder
             
             await _context.Tours.AddRangeAsync(tours);
             await _context.SaveChangesAsync();
+            
+            // Seed Tour Destinations (liên kết tour với điểm đến)
+            var tour2d1n = await _context.Tours.FirstAsync(t => t.Name.Contains("2 ngày 1 đêm"));
+            var tourBeach = await _context.Tours.FirstAsync(t => t.Name.Contains("1 ngày"));
+            var destBeach = await _context.Destinations.FirstAsync(d => d.Name.Contains("Bãi biển"));
+            var destMountain = await _context.Destinations.FirstAsync(d => d.Name.Contains("Núi Phước"));
+            var destTemple = await _context.Destinations.FirstAsync(d => d.Name.Contains("Đình làng"));
+            var destEco = await _context.Destinations.FirstAsync(d => d.Name.Contains("Vườn sinh thái"));
+            
+            var tourDestinations = new List<TourDestination>
+            {
+                new TourDestination { TourId = tour2d1n.Id, DestinationId = destBeach.Id, DisplayOrder = 1 },
+                new TourDestination { TourId = tour2d1n.Id, DestinationId = destMountain.Id, DisplayOrder = 2 },
+                new TourDestination { TourId = tour2d1n.Id, DestinationId = destTemple.Id, DisplayOrder = 3 },
+                new TourDestination { TourId = tour2d1n.Id, DestinationId = destEco.Id, DisplayOrder = 4 },
+                new TourDestination { TourId = tourBeach.Id, DestinationId = destBeach.Id, DisplayOrder = 1 }
+            };
+            
+            await _context.TourDestinations.AddRangeAsync(tourDestinations);
+            await _context.SaveChangesAsync();
+        }
+        
+        // Seed Sample Customers
+        if (await _context.Users.CountAsync() == 1) // Chỉ có admin
+        {
+            var customerRole = await _context.Roles.FirstAsync(r => r.Name == "Customer");
+            
+            var customers = new List<User>
+            {
+                new User
+                {
+                    FullName = "Nguyễn Văn An",
+                    Email = "nguyenvanan@example.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Customer@123"),
+                    PhoneNumber = "0987654321",
+                    IsActive = true,
+                    IsEmailConfirmed = true
+                },
+                new User
+                {
+                    FullName = "Trần Thị Bình",
+                    Email = "tranthibinh@example.com",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Customer@123"),
+                    PhoneNumber = "0976543210",
+                    IsActive = true,
+                    IsEmailConfirmed = true
+                }
+            };
+            
+            await _context.Users.AddRangeAsync(customers);
+            await _context.SaveChangesAsync();
+            
+            // Assign Customer role
+            foreach (var customer in customers)
+            {
+                await _context.UserRoles.AddAsync(new UserRole
+                {
+                    UserId = customer.Id,
+                    RoleId = customerRole.Id
+                });
+            }
+            await _context.SaveChangesAsync();
+        }
+        
+        // Seed Sample Reviews
+        if (!await _context.Reviews.AnyAsync())
+        {
+            var customer = await _context.Users.FirstAsync(u => u.Email.Contains("nguyenvanan"));
+            var destBeach = await _context.Destinations.FirstAsync(d => d.Name.Contains("Bãi biển"));
+            var destMountain = await _context.Destinations.FirstAsync(d => d.Name.Contains("Núi Phước"));
+            
+            var reviews = new List<Review>
+            {
+                new Review
+                {
+                    UserId = customer.Id,
+                    DestinationId = destBeach.Id,
+                    Rating = 5,
+                    Title = "Bãi biển tuyệt vời",
+                    Content = "Bãi biển rất đẹp và sạch sẽ. Cát trắng mịn, nước trong xanh. Rất phù hợp cho gia đình có trẻ nhỏ!",
+                    IsApproved = true
+                },
+                new Review
+                {
+                    UserId = customer.Id,
+                    DestinationId = destMountain.Id,
+                    Rating = 4,
+                    Title = "Phong cảnh đẹp",
+                    Content = "Phong cảnh đẹp, không khí trong lành. Tuy nhiên đường lên hơi khó đi với người già.",
+                    IsApproved = true
+                }
+            };
+            
+            await _context.Reviews.AddRangeAsync(reviews);
+            await _context.SaveChangesAsync();
+        }
+        
+        // Seed Accommodations
+        if (!await _context.Accommodations.AnyAsync())
+        {
+            var accommodations = new List<Accommodation>
+            {
+                new Accommodation
+                {
+                    Name = "Khách sạn Ba Đồng Beach",
+                    Description = "Khách sạn 3 sao view biển, cách bãi biển 50m",
+                    Location = "123 Đường Biển, Xã Ba Đồng",
+                    PhoneNumber = "0236.123.456",
+                    Email = "badongbeach@hotel.com",
+                    PriceFrom = 500000,
+                    Rating = 4.2m,
+                    IsActive = true
+                },
+                new Accommodation
+                {
+                    Name = "Homestay Vườn Xanh",
+                    Description = "Homestay gia đình ấm cúng, gần vườn sinh thái",
+                    Location = "45 Thôn 2, Xã Ba Đồng",
+                    PhoneNumber = "0236.789.012",
+                    Email = "vuonxanh@homestay.com",
+                    PriceFrom = 300000,
+                    Rating = 4.5m,
+                    IsActive = true
+                }
+            };
+            
+            await _context.Accommodations.AddRangeAsync(accommodations);
+            await _context.SaveChangesAsync();
+        }
+        
+        // Seed Restaurants
+        if (!await _context.Restaurants.AnyAsync())
+        {
+            var restaurants = new List<Restaurant>
+            {
+                new Restaurant
+                {
+                    Name = "Nhà hàng Hải sản Ba Đồng",
+                    Description = "Hải sản tươi sống, giá cả phải chăng",
+                    Location = "Bãi biển Ba Đồng",
+                    PhoneNumber = "0236.345.678",
+                    Cuisine = "Hải sản",
+                    AveragePricePerPerson = 300000,
+                    Rating = 4.3m,
+                    IsActive = true
+                },
+                new Restaurant
+                {
+                    Name = "Quán Cơm Quê",
+                    Description = "Các món ăn đặc sản địa phương",
+                    Location = "Thị trấn Ba Đồng",
+                    PhoneNumber = "0236.456.789",
+                    Cuisine = "Ẩm thực miền Trung",
+                    AveragePricePerPerson = 100000,
+                    Rating = 4.0m,
+                    IsActive = true
+                }
+            };
+            
+            await _context.Restaurants.AddRangeAsync(restaurants);
+            await _context.SaveChangesAsync();
         }
     }
 }
