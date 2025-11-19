@@ -22,7 +22,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" asp-page="/Index"><i class="fas fa-home me-1"></i>Trang chủ</a>
                     </li>
@@ -38,6 +38,38 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-page="/Contact"><i class="fas fa-envelope me-1"></i>Liên hệ</a>
                     </li>
+                </ul>
+                <ul class="navbar-nav">
+                    @if (Context.Session.GetString("UserId") != null)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>@Context.Session.GetString("UserName")
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Thông tin tài khoản</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Đơn đặt của tôi</a></li>
+                                @if (Context.Session.GetString("UserRole") == "Admin")
+                                {
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" asp-page="/Admin/Dashboard"><i class="fas fa-tachometer-alt me-2"></i>Quản trị</a></li>
+                                }
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-page="/Auth/Logout"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Auth/Login"><i class="fas fa-sign-in-alt me-1"></i>Đăng nhập</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary text-white ms-2 px-3" asp-page="/Auth/Register" style="border-radius: 20px;">
+                                <i class="fas fa-user-plus me-1"></i>Đăng ký
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
