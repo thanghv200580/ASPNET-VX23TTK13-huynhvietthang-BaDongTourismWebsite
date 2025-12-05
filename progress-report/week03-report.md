@@ -15,7 +15,9 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
 ## ✅ Công việc đã hoàn thành
 
 ### 1. **Destinations Management (Public)**
+
 - ✅ **Destinations/Index.cshtml**: Trang danh sách điểm đến với phân trang
+
   - Hiển thị grid layout responsive với destination cards
   - Filter theo category
   - Search theo tên và địa điểm
@@ -30,13 +32,16 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
   - Share buttons social media
 
 ### 2. **Authentication System**
+
 - ✅ **Auth/Login.cshtml**: Trang đăng nhập
+
   - Form validation (email, password)
   - Remember me checkbox
   - Login error handling
   - Redirect after successful login
 
 - ✅ **Auth/Register.cshtml**: Trang đăng ký
+
   - Form validation đầy đủ
   - Password confirmation
   - Email verification (placeholder)
@@ -47,6 +52,7 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
   - Redirect về homepage
 
 ### 3. **Admin Dashboard**
+
 - ✅ **Admin/Dashboard.cshtml**: Trang tổng quan quản trị
   - Statistics cards (total destinations, tours, bookings, revenue)
   - Recent bookings table
@@ -54,13 +60,16 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
   - Quick actions buttons
 
 ### 4. **Admin Destinations CRUD**
+
 - ✅ **Admin/Destinations/Index.cshtml**: Quản lý danh sách điểm đến
+
   - DataTable với search và sort
   - Status badges (Active/Inactive, Featured)
   - Action buttons (Edit, Delete, View)
   - Bulk actions (placeholder)
 
 - ✅ **Admin/Destinations/Create.cshtml**: Thêm mới điểm đến
+
   - Form validation đầy đủ
   - Category dropdown
   - Rich text editor cho description
@@ -68,6 +77,7 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
   - Preview before save
 
 - ✅ **Admin/Destinations/Edit.cshtml**: Chỉnh sửa điểm đến
+
   - Load existing data
   - Update form với validation
   - Image replacement
@@ -79,7 +89,8 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
   - Related data warning
 
 ### 5. **Database Enhancements**
-- ✅ **Bổ sung Seed Data**: 
+
+- ✅ **Bổ sung Seed Data**:
   - 5 TourDestinations (liên kết tours với destinations)
   - 2 Customer users (nguyenvanan@example.com, tranthibinh@example.com)
   - 2 Reviews với ratings
@@ -87,6 +98,7 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
   - 2 Restaurants
 
 ### 6. **Bug Fixes**
+
 - ✅ Sửa lỗi `Review.Comment` → `Review.Content` trong Details.cshtml
 - ✅ Sửa lỗi PostgreSQL version conflict (v15 → v16)
 - ✅ Sửa lỗi null reference trong Destinations/Index pagination
@@ -96,6 +108,7 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
 ## 🛠️ Chi tiết kỹ thuật
 
 ### **Công nghệ sử dụng:**
+
 - **Backend**: ASP.NET Core 9.0 Razor Pages
 - **Database**: PostgreSQL 16 (Docker)
 - **ORM**: Entity Framework Core 9.0
@@ -104,12 +117,14 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
 - **JavaScript**: jQuery, DataTables
 
 ### **Pattern áp dụng:**
+
 - Repository Pattern
 - Unit of Work Pattern
 - Soft Delete Pattern
 - MVC/MVVM (PageModel)
 
 ### **Seed Data Summary:**
+
 ```
 - 4 Roles (Admin, Staff, Customer, Guest)
 - 3 Users (1 Admin, 2 Customers)
@@ -127,14 +142,16 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
 ## 📊 Thống kê code
 
 ### **Files created/modified:**
+
 - **Pages**: 13 files
   - Destinations: 2 pages
-  - Auth: 3 pages  
+  - Auth: 3 pages
   - Admin: 8 pages
 - **DAL**: 1 file (DbSeeder.cs enhanced)
 - **CSS**: 1 file (custom.css)
 
 ### **Lines of code:**
+
 - Razor Pages (.cshtml): ~800 lines
 - C# PageModels (.cs): ~600 lines
 - CSS: ~300 lines
@@ -145,6 +162,7 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
 ## 🎯 Kết quả đạt được
 
 ### **Tính năng hoàn chỉnh:**
+
 1. ✅ Users có thể xem danh sách và chi tiết điểm đến
 2. ✅ Users có thể đăng ký, đăng nhập, đăng xuất
 3. ✅ Admin có thể quản lý destinations (CRUD đầy đủ)
@@ -152,12 +170,14 @@ Tuần 3 tập trung vào việc hoàn thiện các chức năng CRUD cho Destin
 5. ✅ Hệ thống có seed data đầy đủ để demo
 
 ### **Demo URLs:**
+
 - Homepage: `http://localhost:5040/`
 - Destinations: `http://localhost:5040/Destinations`
 - Login: `http://localhost:5040/Auth/Login`
 - Admin: `http://localhost:5040/Admin/Dashboard`
 
 ### **Test Accounts:**
+
 ```
 Admin:
 - Email: admin@badong.com
@@ -173,18 +193,21 @@ Customer:
 ## 📝 Ghi chú
 
 ### **Điểm mạnh:**
+
 - Code structure rõ ràng, tuân thủ Clean Architecture
 - UI/UX responsive, thân thiện với người dùng
 - Validation đầy đủ cả client-side và server-side
 - Soft delete giúp bảo toàn dữ liệu
 
 ### **Cần cải thiện:**
+
 - Image upload chưa implement (đang dùng placeholder paths)
 - Map integration chưa có (Google Maps API)
 - Email verification chưa thực tế
 - Chart/Statistics chưa có data thực
 
 ### **Technical Debt:**
+
 - Chưa có Unit Tests
 - Chưa có logging system
 - Chưa có error handling middleware
@@ -195,12 +218,15 @@ Customer:
 ## 🚀 Kế hoạch Week 04
 
 ### **Ưu tiên cao:**
+
 1. **Image Upload System**
+
    - Implement file upload với validation
    - Image resizing/optimization
    - Multiple images per destination
 
 2. **Tours Management**
+
    - Tours CRUD pages
    - Tour schedules management
    - Tour-Destination linking UI
@@ -211,7 +237,9 @@ Customer:
    - Booking status tracking
 
 ### **Ưu tiên trung bình:**
+
 4. **Reviews System**
+
    - Customer can write reviews
    - Admin approval workflow
    - Rating aggregation
@@ -222,7 +250,9 @@ Customer:
    - Date availability filter
 
 ### **Ưu tiên thấp:**
+
 6. **Email Notifications**
+
    - Registration confirmation
    - Booking confirmation
    - Password reset
