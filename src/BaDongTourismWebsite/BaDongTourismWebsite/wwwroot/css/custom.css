@@ -443,6 +443,22 @@ a {
   z-index: 10;
 }
 
+.badge-category {
+  background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.025em;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+  text-transform: capitalize;
+}
+
 /* ===== TOUR CARDS ===== */
 .tour-card {
   border: none;
