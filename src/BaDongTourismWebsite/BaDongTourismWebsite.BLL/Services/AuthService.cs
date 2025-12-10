@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using BaDongTourismWebsite.DAL.UnitOfWork;
@@ -19,9 +20,21 @@ public class AuthService : IAuthService
         var user = await _unitOfWork.Repository<User>()
             .FirstOrDefaultAsync(u => u.Email == email && u.IsActive);
 
-        if (user == null || !VerifyPassword(password, user.PasswordHash))
+        if (user == null)
         {
             return null;
+        }
+
+        var isLegacyHash = IsLegacyHash(user.PasswordHash);
+
+        if (!VerifyPassword(password, user.PasswordHash))
+        {
+            return null;
+        }
+
+        if (isLegacyHash)
+        {
+            user.PasswordHash = HashPassword(password);
         }
 
         user.LastLoginDate = DateTime.UtcNow;
@@ -79,15 +92,53 @@ public class AuthService : IAuthService
 
     public string HashPassword(string password)
     {
+        return BCrypt.Net.BCrypt.HashPassword(password);
+    }
+
+    public bool VerifyPassword(string password, string hash)
+    {
+        if (string.IsNullOrWhiteSpace(hash))
+        {
+            return false;
+        }
+
+        if (!IsLegacyHash(hash))
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hash);
+        }
+
+        return HashPasswordLegacy(password) == hash;
+    }
+
+    private static bool IsLegacyHash(string hash)
+    {
+        return !string.IsNullOrWhiteSpace(hash) && !hash.StartsWith("$2", StringComparison.Ordinal);
+    }
+
+    private static string HashPasswordLegacy(string password)
+    {
         using var sha256 = SHA256.Create();
         var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
         return Convert.ToBase64String(hashedBytes);
     }
 
-    public bool VerifyPassword(string password, string hash)
+    public async Task<IReadOnlyList<string>> GetUserRolesAsync(int userId)
     {
-        var passwordHash = HashPassword(password);
-        return passwordHash == hash;
+        var userRoles = await _unitOfWork.Repository<UserRole>().FindAsync(ur => ur.UserId == userId);
+
+        if (!userRoles.Any())
+        {
+            return Array.Empty<string>();
+        }
+
+        var roleIds = userRoles.Select(ur => ur.RoleId).ToList();
+        var roles = await _unitOfWork.Repository<Role>().FindAsync(r => roleIds.Contains(r.Id));
+
+        return roles
+            .Select(r => r.Name)
+            .Where(name => !string.IsNullOrWhiteSpace(name))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
     }
 }
 

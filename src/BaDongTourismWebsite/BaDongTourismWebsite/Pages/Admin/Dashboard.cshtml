@@ -1,113 +1,124 @@
 @page
 @model BaDongTourismWebsite.Pages.Admin.DashboardModel
+@using System.Linq
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "/Pages/Shared/_AdminLayout.cshtml";
 }
-
-<div class="admin-container">
-    <div class="container">
-        <div class="admin-header mb-4">
-            <h2><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Tổng quan</span>
+            <h2 class="admin-page-title">Hiệu suất hệ thống</h2>
         </div>
-
-        <div class="row g-4 mb-4">
-            <div class="col-md-3">
-                <div class="admin-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-map-marked-alt fa-3x text-primary"></i>
-                    </div>
-                    <h3>@Model.TotalDestinations</h3>
-                    <p class="text-muted mb-0">Điểm du lịch</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="admin-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-route fa-3x text-primary"></i>
-                    </div>
-                    <h3>@Model.TotalTours</h3>
-                    <p class="text-muted mb-0">Tours</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="admin-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-users fa-3x text-primary"></i>
-                    </div>
-                    <h3>@Model.TotalUsers</h3>
-                    <p class="text-muted mb-0">Người dùng</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="admin-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-bookmark fa-3x text-primary"></i>
-                    </div>
-                    <h3>@Model.TotalBookings</h3>
-                    <p class="text-muted mb-0">Đơn đặt</p>
-                </div>
-            </div>
+        <div class="admin-page-actions">
+            <a asp-page="/Admin/Destinations/Create" class="btn btn-admin-primary">
+                <i class="fas fa-plus me-2"></i>Thêm điểm du lịch
+            </a>
+            <a asp-page="/Admin/Destinations/Index" class="btn btn-admin-ghost">Xem danh sách điểm đến</a>
         </div>
+    </section>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="admin-card">
-                    <div class="admin-header">
-                        <h5>Điểm du lịch nổi bật</h5>
-                        <a asp-page="/Admin/Destinations/Index" class="btn btn-sm btn-admin-primary">Xem tất cả</a>
-                    </div>
+    <section class="admin-stat-grid">
+        <article class="admin-stat-card">
+            <div class="admin-stat-icon"><i class="fas fa-map-marked-alt"></i></div>
+            <span class="admin-stat-label">Điểm du lịch</span>
+            <span class="admin-stat-value">@Model.TotalDestinations</span>
+        </article>
+        <article class="admin-stat-card">
+            <div class="admin-stat-icon"><i class="fas fa-route"></i></div>
+            <span class="admin-stat-label">Tours</span>
+            <span class="admin-stat-value">@Model.TotalTours</span>
+        </article>
+        <article class="admin-stat-card">
+            <div class="admin-stat-icon"><i class="fas fa-users"></i></div>
+            <span class="admin-stat-label">Người dùng</span>
+            <span class="admin-stat-value">@Model.TotalUsers</span>
+        </article>
+        <article class="admin-stat-card">
+            <div class="admin-stat-icon"><i class="fas fa-bookmark"></i></div>
+            <span class="admin-stat-label">Đơn đặt</span>
+            <span class="admin-stat-value">@Model.TotalBookings</span>
+        </article>
+    </section>
+
+    <section class="admin-grid">
+        <article class="admin-card admin-card--table">
+            <header class="admin-card-header">
+                <h3>Điểm du lịch nổi bật</h3>
+                <a asp-page="/Admin/Destinations/Index" class="btn btn-admin-ghost">Xem tất cả</a>
+            </header>
+            <div class="admin-card-body p-0">
+                @if (Model.FeaturedDestinations?.Any() == true)
+                {
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table-admin table align-middle">
                             <thead>
-                                <tr>
-                                    <th>Tên</th>
-                                    <th>Đánh giá</th>
-                                    <th>Trạng thái</th>
-                                </tr>
+                            <tr>
+                                <th>Tên</th>
+                                <th>Đánh giá</th>
+                                <th>Trạng thái</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @foreach (var dest in Model.FeaturedDestinations.Take(5))
-                                {
-                                    <tr>
-                                        <td>@dest.Name</td>
-                                        <td>@dest.Rating.ToString("0.0")</td>
-                                        <td>
-                                            @if (dest.IsActive)
-                                            {
-                                                <span class="badge-status badge-active">Hoạt động</span>
-                                            }
-                                            else
-                                            {
-                                                <span class="badge-status badge-inactive">Không hoạt động</span>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
+                            @foreach (var dest in Model.FeaturedDestinations.Take(6))
+                            {
+                                <tr>
+                                    <td>@dest.Name</td>
+                                    <td>
+                                        <strong>@dest.Rating.ToString("0.0")</strong>
+                                    </td>
+                                    <td>
+                                        @if (dest.IsFeatured)
+                                        {
+                                            <span class="badge-status badge-featured">Nổi bật</span>
+                                        }
+                                        else if (dest.IsActive)
+                                        {
+                                            <span class="badge-status badge-active">Hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge-status badge-inactive">Tạm ngưng</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
+                }
+                else
+                {
+                    <div class="admin-empty-state">
+                        <i class="fas fa-box-open fa-2x mb-3"></i>
+                        <p>Chưa có điểm du lịch nào được đánh dấu nổi bật.</p>
+                    </div>
+                }
+            </div>
+        </article>
+
+        <article class="admin-card">
+            <header class="admin-card-header">
+                <h3>Hành động nhanh</h3>
+            </header>
+            <div class="admin-card-body">
+                <div class="admin-action-list">
+                    <a asp-page="/Admin/Destinations/Create" class="admin-action">
+                        <span><i class="fas fa-plus me-2"></i>Thêm điểm du lịch mới</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a asp-page="/Admin/Destinations/Index" class="admin-action">
+                        <span><i class="fas fa-list me-2"></i>Quản lý điểm du lịch</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a asp-page="/Admin/Tours/Index" class="admin-action">
+                        <span><i class="fas fa-route me-2"></i>Quản lý tours</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="admin-card">
-                    <div class="admin-header">
-                        <h5>Hành động nhanh</h5>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <a asp-page="/Admin/Destinations/Create" class="btn btn-admin-primary">
-                            <i class="fas fa-plus me-2"></i>Thêm điểm du lịch mới
-                        </a>
-                        <a asp-page="/Admin/Destinations/Index" class="btn btn-outline-primary">
-                            <i class="fas fa-list me-2"></i>Quản lý điểm du lịch
-                        </a>
-                        <a asp-page="/Admin/Tours/Index" class="btn btn-outline-primary">
-                            <i class="fas fa-route me-2"></i>Quản lý Tours
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </article>
+    </section>
 </div>
 

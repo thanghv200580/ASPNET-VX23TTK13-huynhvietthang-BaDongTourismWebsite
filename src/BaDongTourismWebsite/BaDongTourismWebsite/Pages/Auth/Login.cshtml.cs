@@ -56,8 +56,17 @@ public class LoginModel : PageModel
             HttpContext.Session.SetString("UserEmail", user.Email);
             HttpContext.Session.SetString("UserName", user.FullName);
 
-            // Get user roles
-            // TODO: Implement role checking logic
+            var roles = await _authService.GetUserRolesAsync(user.Id);
+            if (roles.Count > 0)
+            {
+                HttpContext.Session.SetString("UserRole", roles[0]);
+                HttpContext.Session.SetString("UserRoles", string.Join(',', roles));
+            }
+            else
+            {
+                HttpContext.Session.Remove("UserRole");
+                HttpContext.Session.Remove("UserRoles");
+            }
 
             _logger.LogInformation("User {Email} logged in successfully", Email);
 
@@ -65,6 +74,11 @@ public class LoginModel : PageModel
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
+            }
+
+            if (roles.Contains("Admin", StringComparer.OrdinalIgnoreCase))
+            {
+                return RedirectToPage("/Admin/Dashboard");
             }
 
             return RedirectToPage("/Index");

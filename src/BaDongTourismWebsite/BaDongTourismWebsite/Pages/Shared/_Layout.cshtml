@@ -76,46 +76,9 @@
     </nav>
 </header>
 
-@RenderBody()
-
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 mb-2">
-                <h5><i class="fas fa-umbrella-beach me-2"></i>Du Lịch Ba Đồng</h5>
-                <p>Khám phá vẻ đẹp Ba Đồng cùng chúng tôi.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                </div>
-            </div>
-            <div class="col-md-4 mb-2">
-                <h5>Liên kết</h5>
-                <ul class="list-unstyled">
-                    <li><a asp-page="/Index">Trang chủ</a></li>
-                    <li><a asp-page="/Destinations/Index">Điểm du lịch</a></li>
-                    <li><a asp-page="/Tours/Index">Tours</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 mb-2">
-                <h5>Liên hệ</h5>
-                <ul class="list-unstyled">
-                    <li><i class="fas fa-map-marker-alt me-2"></i>Ba Đồng, QB</li>
-                    <li><i class="fas fa-phone me-2"></i>0123 456 789</li>
-                    <li><i class="fas fa-envelope me-2"></i>info@badong.vn</li>
-                </ul>
-            </div>
-        </div>
-        <hr class="bg-light">
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <p class="mb-0" style="font-size: 0.85rem;">&copy; 2025 Du Lịch Ba Đồng</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<main>
+    @RenderBody()
+</main>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

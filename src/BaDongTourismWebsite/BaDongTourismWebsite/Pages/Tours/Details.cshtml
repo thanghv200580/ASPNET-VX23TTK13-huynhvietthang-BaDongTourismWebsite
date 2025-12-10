@@ -1,0 +1,105 @@
+@page
+@model BaDongTourismWebsite.Pages.Tours.DetailsModel
+@{
+    ViewData["Title"] = Model.Tour?.Name ?? "Chi tiết Tour";
+}
+
+@if (Model.Tour == null)
+{
+    <div class="container my-5">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>Không tìm thấy thông tin tour này.
+        </div>
+        <a asp-page="/Index" class="btn btn-primary">Quay lại trang chủ</a>
+    </div>
+}
+else
+{
+    <div class="destination-hero" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('@(Model.Tour.MainImage ?? "https://via.placeholder.com/1920x600")');">
+        <div class="container">
+            <div class="destination-hero-content">
+                <h1 class="display-4 fw-bold text-white mb-3">@Model.Tour.Name</h1>
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <span class="badge bg-warning text-dark fs-6">
+                        <i class="fas fa-star"></i> @Model.Tour.Rating.ToString("F1")
+                    </span>
+                    <span class="text-white fs-5">
+                        <i class="fas fa-clock me-2"></i>@Model.Tour.Duration ngày
+                    </span>
+                    <span class="text-white fs-5">
+                        <i class="fas fa-users me-2"></i>Tối đa @Model.Tour.MaxParticipants người
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">Thông tin tour</h3>
+                        @if (!string.IsNullOrEmpty(Model.Tour.ShortDescription))
+                        {
+                            <p class="lead">@Model.Tour.ShortDescription</p>
+                        }
+                        <p class="text-muted">@Model.Tour.Description</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">Thời gian khởi hành</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Ngày khởi hành:</strong><br />@Model.Tour.StartDate.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Ngày kết thúc:</strong><br />@Model.Tour.EndDate.ToString("dd/MM/yyyy HH:mm")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card position-sticky" style="top: 20px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Giá tour</h4>
+                        @if (Model.Tour.DiscountPrice.HasValue)
+                        {
+                            <p class="mb-1">
+                                <s class="text-muted fs-5">@Model.Tour.Price.ToString("N0") đ</s>
+                            </p>
+                            <p class="text-danger fw-bold fs-3 mb-3">@Model.Tour.DiscountPrice.Value.ToString("N0") đ</p>
+                        }
+                        else
+                        {
+                            <p class="fw-bold fs-3 mb-3">@Model.Tour.Price.ToString("N0") đ</p>
+                        }
+                        <p class="text-muted small">Giá trên người</p>
+
+                        <hr />
+
+                        @{
+                            var userId = HttpContext.Session.GetInt32("UserId");
+                        }
+                        @if (userId.HasValue)
+                        {
+                            <a asp-page="/Tours/Book" asp-route-id="@Model.Tour.Id" class="btn btn-primary w-100 btn-lg">
+                                <i class="fas fa-calendar-check me-2"></i>Đặt tour ngay
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-page="/Auth/Login" asp-route-returnUrl="@Url.Page("/Tours/Details", new { id = Model.Tour.Id })" class="btn btn-primary w-100 btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập để đặt tour
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

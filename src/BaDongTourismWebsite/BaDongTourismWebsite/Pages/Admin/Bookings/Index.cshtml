@@ -1,0 +1,132 @@
+@page
+@model BaDongTourismWebsite.Pages.Admin.Bookings.IndexModel
+@{
+    ViewData["Title"] = "Quản lý đơn đặt tour";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Danh sách</span>
+            <h2 class="admin-page-title">Quản lý đơn đặt tour</h2>
+        </div>
+    </section>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success admin-alert admin-alert--success" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="admin-card">
+        <div class="admin-card-body">
+            <div class="table-responsive">
+                <table class="table admin-table">
+                    <thead>
+                        <tr>
+                            <th>Mã đơn</th>
+                            <th>Khách hàng</th>
+                            <th>Tour</th>
+                            <th>Số người</th>
+                            <th>Tổng tiền</th>
+                            <th>Ngày đặt</th>
+                            <th>Trạng thái</th>
+                            <th class="text-end">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Bookings.Any())
+                        {
+                            @foreach (var booking in Model.Bookings)
+                            {
+                                <tr>
+                                    <td><strong>@booking.BookingCode</strong></td>
+                                    <td>
+                                        <div>
+                                            <strong>@booking.ContactName</strong><br />
+                                            <small class="text-muted">@booking.ContactEmail</small><br />
+                                            <small class="text-muted">@booking.ContactPhone</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (booking.Tour != null)
+                                        {
+                                            <strong>@booking.Tour.Name</strong>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Tour #@booking.TourId</span>
+                                        }
+                                    </td>
+                                    <td>@booking.NumberOfPeople</td>
+                                    <td><strong>@booking.FinalAmount.ToString("N0") đ</strong></td>
+                                    <td>@booking.BookingDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @switch (booking.Status)
+                                        {
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Pending:
+                                                <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Confirmed:
+                                                <span class="badge bg-success">Đã xác nhận</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Cancelled:
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Completed:
+                                                <span class="badge bg-info">Hoàn thành</span>
+                                                break;
+                                            default:
+                                                <span class="badge bg-secondary">@booking.Status</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        @if (booking.Status == BaDongTourismWebsite.Entity.Entities.BookingStatus.Pending)
+                                        {
+                                            <form method="post" asp-page-handler="Confirm" asp-route-id="@booking.Id" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-success" title="Xác nhận">
+                                                    <i class="fas fa-check"></i> Xác nhận
+                                                </button>
+                                            </form>
+                                            <form method="post" asp-page-handler="Cancel" asp-route-id="@booking.Id" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hủy">
+                                                    <i class="fas fa-times"></i> Hủy
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (booking.Status == BaDongTourismWebsite.Entity.Entities.BookingStatus.Confirmed)
+                                        {
+                                            <form method="post" asp-page-handler="Complete" asp-route-id="@booking.Id" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-info" title="Hoàn thành">
+                                                    <i class="fas fa-check-circle"></i> Hoàn thành
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                                        <p>Chưa có đơn đặt tour nào.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

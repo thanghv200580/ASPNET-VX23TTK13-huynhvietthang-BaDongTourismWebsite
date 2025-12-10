@@ -1,0 +1,131 @@
+@page
+@model BaDongTourismWebsite.Pages.Tours.BookModel
+@{
+    ViewData["Title"] = "Đặt Tour";
+}
+
+@if (Model.Tour == null)
+{
+    <div class="container my-5">
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i>Không tìm thấy thông tin tour này.
+        </div>
+        <a asp-page="/Index" class="btn btn-primary">Quay lại trang chủ</a>
+    </div>
+}
+else
+{
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Đặt Tour</h3>
+                    </div>
+                    <div class="card-body">
+                        @if (TempData["ErrorMessage"] != null)
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                            </div>
+                        }
+
+                        <div class="mb-4">
+                            <h4>@Model.Tour.Name</h4>
+                            <p class="text-muted">
+                                <i class="fas fa-clock me-2"></i>@Model.Tour.Duration ngày<br />
+                                <i class="fas fa-calendar me-2"></i>Khởi hành: @Model.Tour.StartDate.ToString("dd/MM/yyyy")
+                            </p>
+                        </div>
+
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="Booking.ContactName" class="form-label">Họ và tên *</label>
+                                <input asp-for="Booking.ContactName" class="form-control" required />
+                                <span asp-validation-for="Booking.ContactName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Booking.ContactEmail" class="form-label">Email *</label>
+                                <input asp-for="Booking.ContactEmail" type="email" class="form-control" required />
+                                <span asp-validation-for="Booking.ContactEmail" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Booking.ContactPhone" class="form-label">Số điện thoại *</label>
+                                <input asp-for="Booking.ContactPhone" type="tel" class="form-control" required />
+                                <span asp-validation-for="Booking.ContactPhone" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Booking.NumberOfPeople" class="form-label">Số người *</label>
+                                <input asp-for="Booking.NumberOfPeople" type="number" min="1" max="@Model.Tour.MaxParticipants" class="form-control" required id="numberOfPeople" />
+                                <span asp-validation-for="Booking.NumberOfPeople" class="text-danger"></span>
+                                <small class="text-muted">Tối đa @Model.Tour.MaxParticipants người</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Booking.Notes" class="form-label">Ghi chú</label>
+                                <textarea asp-for="Booking.Notes" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="Booking.Notes" class="text-danger"></span>
+                            </div>
+
+                            <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                    <h5>Tổng cộng</h5>
+                                    <p class="mb-1">
+                                        Đơn giá: <strong id="unitPrice">@((Model.Tour.DiscountPrice ?? Model.Tour.Price).ToString("N0"))</strong> đ
+                                    </p>
+                                    <p class="mb-1">
+                                        Số người: <strong id="displayPeople">1</strong>
+                                    </p>
+                                    <hr />
+                                    <h4 class="text-primary mb-0">
+                                        Tổng tiền: <strong id="totalAmount">@((Model.Tour.DiscountPrice ?? Model.Tour.Price).ToString("N0"))</strong> đ
+                                    </h4>
+                                </div>
+                            </div>
+
+                            <input type="hidden" asp-for="Booking.TotalAmount" id="totalAmountField" />
+                            <input type="hidden" asp-for="Booking.FinalAmount" id="finalAmountField" />
+
+                            <div class="d-flex gap-2">
+                                <a asp-page="/Tours/Details" asp-route-id="@Model.Tour.Id" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </a>
+                                <button type="submit" class="btn btn-primary flex-grow-1">
+                                    <i class="fas fa-check me-2"></i>Xác nhận đặt tour
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        const unitPrice = @((Model.Tour?.DiscountPrice ?? Model.Tour?.Price ?? 0));
+        
+        document.getElementById('numberOfPeople').addEventListener('input', function() {
+            const people = parseInt(this.value) || 1;
+            const total = unitPrice * people;
+            
+            document.getElementById('displayPeople').textContent = people;
+            document.getElementById('totalAmount').textContent = total.toLocaleString('vi-VN');
+            document.getElementById('totalAmountField').value = total;
+            document.getElementById('finalAmountField').value = total;
+        });
+        
+        // Initialize on page load
+        const initialPeople = parseInt(document.getElementById('numberOfPeople').value) || 1;
+        const initialTotal = unitPrice * initialPeople;
+        document.getElementById('totalAmountField').value = initialTotal;
+        document.getElementById('finalAmountField').value = initialTotal;
+    </script>
+}

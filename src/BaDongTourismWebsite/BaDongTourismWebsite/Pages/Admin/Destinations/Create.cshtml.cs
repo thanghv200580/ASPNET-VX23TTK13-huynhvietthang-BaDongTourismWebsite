@@ -35,6 +35,8 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        ModelState.Remove("Destination.Category");
+
         if (!ModelState.IsValid)
         {
             await LoadCategoriesAsync();

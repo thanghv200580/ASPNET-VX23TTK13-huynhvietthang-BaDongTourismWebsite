@@ -9,5 +9,6 @@ public interface IAuthService
     Task<bool> EmailExistsAsync(string email);
     string HashPassword(string password);
     bool VerifyPassword(string password, string hash);
+    Task<IReadOnlyList<string>> GetUserRolesAsync(int userId);
 }
 

@@ -1,0 +1,139 @@
+@page
+@model BaDongTourismWebsite.Pages.Admin.Tours.IndexModel
+@{
+    ViewData["Title"] = "Quản lý Tours";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Danh sách</span>
+            <h2 class="admin-page-title">Quản lý Tours</h2>
+        </div>
+        <div class="admin-page-actions">
+            <a asp-page="/Admin/Tours/Create" class="btn btn-admin-primary">
+                <i class="fas fa-plus me-2"></i>Thêm Tour
+            </a>
+        </div>
+    </section>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success admin-alert admin-alert--success" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="admin-card">
+        <div class="admin-card-body">
+            <div class="table-responsive">
+                <table class="table admin-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px;">Mã</th>
+                            <th style="width: 350px;">Thông tin Tour</th>
+                            <th style="width: 100px;"><i class="fas fa-clock me-1"></i>Thời gian</th>
+                            <th style="width: 150px;"><i class="fas fa-tag me-1"></i>Giá</th>
+                            <th style="width: 100px;"><i class="fas fa-users me-1"></i>Số chỗ</th>
+                            <th style="width: 120px;"><i class="fas fa-calendar me-1"></i>Khởi hành</th>
+                            <th style="width: 100px;"><i class="fas fa-star me-1"></i>Đánh giá</th>
+                            <th style="width: 130px;">Trạng thái</th>
+                            <th class="text-end" style="width: 120px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Tours.Any())
+                        {
+                            @foreach (var tour in Model.Tours)
+                            {
+                                <tr>
+                                    <td><strong>#@tour.Id</strong></td>
+                                    <td>
+                                        <div class="tour-info-cell">
+                                            @if (!string.IsNullOrEmpty(tour.MainImage))
+                                            {
+                                                <img src="@tour.MainImage" alt="@tour.Name" class="admin-table-img" />
+                                            }
+                                            else
+                                            {
+                                                <div class="admin-table-img d-flex align-items-center justify-content-center bg-light text-muted">
+                                                    <i class="fas fa-image"></i>
+                                                </div>
+                                            }
+                                            <div class="tour-info-text">
+                                                <div class="tour-info-name">
+                                                    @tour.Name
+                                                    @if (tour.IsFeatured)
+                                                    {
+                                                        <span class="badge bg-warning text-dark ms-1"><i class="fas fa-star"></i> Nổi bật</span>
+                                                    }
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(tour.ShortDescription))
+                                                {
+                                                    <div class="tour-info-desc">@tour.ShortDescription</div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>@tour.Duration ngày</td>
+                                    <td>
+                                        @if (tour.DiscountPrice.HasValue)
+                                        {
+                                            <div>
+                                                <s class="text-muted">@tour.Price.ToString("N0") đ</s><br />
+                                                <strong class="text-danger">@tour.DiscountPrice.Value.ToString("N0") đ</strong>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <strong>@tour.Price.ToString("N0") đ</strong>
+                                        }
+                                    </td>
+                                    <td>@tour.MaxParticipants</td>
+                                    <td>@tour.StartDate.ToString("dd/MM/yyyy")</td>
+                                    <td>
+                                        <span class="admin-rating">
+                                            <i class="fas fa-star text-warning"></i> @tour.Rating.ToString("F1")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (tour.IsActive)
+                                        {
+                                            <span class="badge bg-success">Đang hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Ngừng hoạt động</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-page="/Admin/Tours/Edit" asp-route-id="@tour.Id" class="btn btn-outline-primary" title="Chỉnh sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a asp-page="/Admin/Tours/Delete" asp-route-id="@tour.Id" class="btn btn-outline-danger" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="fas fa-inbox fa-3x mb-3"></i>
+                                        <p>Chưa có tour nào. <a asp-page="/Admin/Tours/Create">Thêm tour đầu tiên</a></p>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,170 @@
+@page
+@model BaDongTourismWebsite.Pages.Account.BookingsModel
+@{
+    ViewData["Title"] = "Đơn đặt tour của tôi";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4"><i class="fas fa-ticket-alt me-2"></i>Đơn đặt tour của tôi</h2>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>@TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (Model.Bookings == null || !Model.Bookings.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>Bạn chưa có đơn đặt tour nào.
+                    <a asp-page="/Index" class="alert-link">Khám phá các tour du lịch</a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Tour</th>
+                                <th>Ngày đặt</th>
+                                <th>Số người</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in Model.Bookings)
+                            {
+                                <tr>
+                                    <td><strong>@booking.BookingCode</strong></td>
+                                    <td>
+                                        @if (booking.Tour != null)
+                                        {
+                                            <a asp-page="/Tours/Details" asp-route-id="@booking.TourId">@booking.Tour.Name</a>
+                                            <br />
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>@booking.Tour.StartDate.ToString("dd/MM/yyyy")
+                                            </small>
+                                        }
+                                    </td>
+                                    <td>@booking.BookingDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>@booking.NumberOfPeople người</td>
+                                    <td><strong>@booking.FinalAmount.ToString("N0") đ</strong></td>
+                                    <td>
+                                        @switch (booking.Status)
+                                        {
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Pending:
+                                                <span class="badge bg-warning text-dark">Chờ xác nhận</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Confirmed:
+                                                <span class="badge bg-success">Đã xác nhận</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Cancelled:
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Completed:
+                                                <span class="badge bg-info text-dark">Hoàn thành</span>
+                                                break;
+                                            case BaDongTourismWebsite.Entity.Entities.BookingStatus.Refunded:
+                                                <span class="badge bg-secondary">Đã hoàn tiền</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailModal-@booking.Id">
+                                                <i class="fas fa-eye"></i> Chi tiết
+                                            </button>
+                                            @if (booking.Status == BaDongTourismWebsite.Entity.Entities.BookingStatus.Pending)
+                                            {
+                                                <form method="post" asp-page-handler="Cancel" asp-route-id="@booking.Id" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn hủy đơn đặt tour này?');">
+                                                    <button type="submit" class="btn btn-outline-danger">
+                                                        <i class="fas fa-times"></i> Hủy
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Detail Modal -->
+                                <div class="modal fade" id="detailModal-@booking.Id" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Chi tiết đơn đặt tour</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h6>Thông tin tour</h6>
+                                                        <p><strong>Tour:</strong> @booking.Tour?.Name</p>
+                                                        <p><strong>Khởi hành:</strong> @booking.Tour?.StartDate.ToString("dd/MM/yyyy")</p>
+                                                        <p><strong>Thời gian:</strong> @booking.Tour?.Duration ngày</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h6>Thông tin liên hệ</h6>
+                                                        <p><strong>Họ tên:</strong> @booking.ContactName</p>
+                                                        <p><strong>Email:</strong> @booking.ContactEmail</p>
+                                                        <p><strong>Điện thoại:</strong> @booking.ContactPhone</p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h6>Chi tiết đơn hàng</h6>
+                                                        <p><strong>Mã đơn:</strong> @booking.BookingCode</p>
+                                                        <p><strong>Ngày đặt:</strong> @booking.BookingDate.ToString("dd/MM/yyyy HH:mm")</p>
+                                                        <p><strong>Số người:</strong> @booking.NumberOfPeople người</p>
+                                                        @if (booking.Status == BaDongTourismWebsite.Entity.Entities.BookingStatus.Confirmed && booking.ConfirmedDate.HasValue)
+                                                        {
+                                                            <p><strong>Ngày xác nhận:</strong> @booking.ConfirmedDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                                                        }
+                                                        @if (booking.Status == BaDongTourismWebsite.Entity.Entities.BookingStatus.Cancelled && booking.CancelledDate.HasValue)
+                                                        {
+                                                            <p><strong>Ngày hủy:</strong> @booking.CancelledDate.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                                                        }
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h6>Thanh toán</h6>
+                                                        <p><strong>Tổng tiền:</strong> @booking.TotalAmount.ToString("N0") đ</p>
+                                                        <p><strong>Thành tiền:</strong> <span class="text-primary fs-5">@booking.FinalAmount.ToString("N0") đ</span></p>
+                                                    </div>
+                                                </div>
+                                                @if (!string.IsNullOrEmpty(booking.Notes))
+                                                {
+                                                    <hr />
+                                                    <h6>Ghi chú</h6>
+                                                    <p>@booking.Notes</p>
+                                                }
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

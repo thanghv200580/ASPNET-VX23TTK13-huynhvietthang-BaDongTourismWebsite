@@ -43,6 +43,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 // Add Services
 builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IAuthService, BaDongTourismWebsite.BLL.Services.AuthService>();
 builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IDestinationService, BaDongTourismWebsite.BLL.Services.DestinationService>();
+builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.ITourService, BaDongTourismWebsite.BLL.Services.TourService>();
+builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IBookingService, BaDongTourismWebsite.BLL.Services.BookingService>();
 
 // Add DbSeeder
 builder.Services.AddScoped<DbSeeder>();

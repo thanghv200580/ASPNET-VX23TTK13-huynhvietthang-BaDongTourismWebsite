@@ -5,90 +5,100 @@
     Layout = "/Pages/Shared/_AdminLayout.cshtml";
 }
 
-<div class="admin-container">
-    <div class="container">
-        <div class="admin-header">
-            <h2><i class="fas fa-map-marked-alt me-2"></i>Quản lý Điểm Du Lịch</h2>
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Danh sách</span>
+            <h2 class="admin-page-title">Quản lý điểm du lịch</h2>
+        </div>
+        <div class="admin-page-actions">
             <a asp-page="/Admin/Destinations/Create" class="btn btn-admin-primary">
                 <i class="fas fa-plus me-2"></i>Thêm mới
             </a>
         </div>
+    </section>
 
-        @if (!string.IsNullOrEmpty(Model.SuccessMessage))
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>@Model.SuccessMessage
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success admin-alert alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
-        <div class="admin-card">
+    <section class="admin-card admin-card--table">
+        <header class="admin-card-header">
+            <h3>Danh sách điểm du lịch</h3>
+        </header>
+        <div class="admin-card-body p-0">
             <div class="table-responsive">
-                <table class="table table-admin">
+                <table class="table-admin table align-middle">
                     <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên</th>
-                            <th>Địa điểm</th>
-                            <th>Loại</th>
-                            <th>Đánh giá</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
-                        </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên</th>
+                        <th>Địa điểm</th>
+                        <th>Loại</th>
+                        <th>Đánh giá</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        @if (Model.Destinations.Any())
-                        {
-                            @foreach (var destination in Model.Destinations)
-                            {
-                                <tr>
-                                    <td>@destination.Id</td>
-                                    <td>
-                                        <strong>@destination.Name</strong>
-                                        @if (destination.IsFeatured)
-                                        {
-                                            <span class="badge-status badge-featured ms-2">Nổi bật</span>
-                                        }
-                                    </td>
-                                    <td>@destination.Location</td>
-                                    <td>@destination.Category?.Name</td>
-                                    <td>@destination.Rating.ToString("0.0")</td>
-                                    <td>
-                                        @if (destination.IsActive)
-                                        {
-                                            <span class="badge-status badge-active">Hoạt động</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge-status badge-inactive">Không hoạt động</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a asp-page="/Admin/Destinations/Edit" asp-route-id="@destination.Id" class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a asp-page="/Admin/Destinations/Delete" asp-route-id="@destination.Id" class="btn btn-sm btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
+                    @if (Model.Destinations.Any())
+                    {
+                        @foreach (var destination in Model.Destinations)
                         {
                             <tr>
-                                <td colspan="7" class="text-center py-4">
-                                    <i class="fas fa-inbox fa-2x text-muted mb-2"></i>
-                                    <p class="text-muted mb-0">Chưa có điểm du lịch nào</p>
+                                <td>@destination.Id</td>
+                                <td>
+                                    <strong>@destination.Name</strong>
+                                    @if (destination.IsFeatured)
+                                    {
+                                        <span class="badge-status badge-featured ms-2">Nổi bật</span>
+                                    }
+                                </td>
+                                <td>@destination.Location</td>
+                                <td>@destination.Category?.Name</td>
+                                <td><strong>@destination.Rating.ToString("0.0")</strong></td>
+                                <td>
+                                    @if (destination.IsActive)
+                                    {
+                                        <span class="badge-status badge-active">Hoạt động</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-status badge-inactive">Không hoạt động</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-page="/Admin/Destinations/Edit" asp-route-id="@destination.Id" class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-page="/Admin/Destinations/Delete" asp-route-id="@destination.Id" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7">
+                                <div class="admin-empty-state">
+                                    <i class="fas fa-inbox fa-2x"></i>
+                                    <p>Chưa có điểm du lịch nào.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 

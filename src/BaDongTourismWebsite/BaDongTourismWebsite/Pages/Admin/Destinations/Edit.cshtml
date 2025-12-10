@@ -7,121 +7,122 @@
 
 @if (Model.Destination == null)
 {
-    <div class="admin-container">
-        <div class="container">
-            <div class="alert alert-danger">
-                <i class="fas fa-exclamation-circle me-2"></i>Không tìm thấy điểm du lịch này.
+    <div class="admin-page">
+        <section class="admin-page-header">
+            <div class="admin-page-heading">
+                <span class="admin-page-subtitle">Lỗi</span>
+                <h2 class="admin-page-title">Không tìm thấy dữ liệu</h2>
             </div>
-            <a asp-page="/Admin/Destinations/Index" class="btn btn-primary">Quay lại</a>
+        </section>
+        <div class="admin-card">
+            <div class="admin-empty-state">
+                <i class="fas fa-exclamation-circle fa-2x"></i>
+                <p>Không tìm thấy điểm du lịch này.</p>
+                <div class="admin-form-actions justify-content-center">
+                    <a asp-page="/Admin/Destinations/Index" class="btn btn-admin-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Quay lại danh sách
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 }
 else
 {
-    <div class="admin-container">
-        <div class="container">
-            <div class="admin-header">
-                <h2><i class="fas fa-edit me-2"></i>Chỉnh sửa: @Model.Destination.Name</h2>
-                <a asp-page="/Admin/Destinations/Index" class="btn btn-outline-primary">
-                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+    <div class="admin-page">
+        <section class="admin-page-header">
+            <div class="admin-page-heading">
+                <span class="admin-page-subtitle">Chỉnh sửa</span>
+                <h2 class="admin-page-title">@Model.Destination.Name</h2>
+            </div>
+            <div class="admin-page-actions">
+                <a asp-page="/Admin/Destinations/Index" class="btn btn-admin-ghost">
+                    <i class="fas fa-arrow-left me-2"></i>Danh sách
                 </a>
             </div>
+        </section>
 
-            <div class="admin-card">
-                <form method="post">
-                    <input type="hidden" asp-for="Destination.Id" />
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+        <form method="post" class="admin-form">
+            <input type="hidden" asp-for="Destination.Id" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger admin-alert admin-alert--error" role="alert"></div>
 
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="mb-3">
-                                <label asp-for="Destination.Name" class="form-label">Tên điểm du lịch *</label>
-                                <input asp-for="Destination.Name" class="form-control" required>
-                                <span asp-validation-for="Destination.Name" class="text-danger"></span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label asp-for="Destination.ShortDescription" class="form-label">Mô tả ngắn</label>
-                                <textarea asp-for="Destination.ShortDescription" class="form-control" rows="3"></textarea>
-                                <span asp-validation-for="Destination.ShortDescription" class="text-danger"></span>
-                            </div>
-
-                            <div class="mb-3">
-                                <label asp-for="Destination.Description" class="form-label">Mô tả chi tiết *</label>
-                                <textarea asp-for="Destination.Description" class="form-control" rows="6" required></textarea>
-                                <span asp-validation-for="Destination.Description" class="text-danger"></span>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label asp-for="Destination.Location" class="form-label">Địa điểm *</label>
-                                        <input asp-for="Destination.Location" class="form-control" required>
-                                        <span asp-validation-for="Destination.Location" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label asp-for="Destination.Province" class="form-label">Tỉnh/Thành phố *</label>
-                                        <input asp-for="Destination.Province" class="form-control" required>
-                                        <span asp-validation-for="Destination.Province" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label asp-for="Destination.CategoryId" class="form-label">Loại *</label>
-                                        <select asp-for="Destination.CategoryId" class="form-select" asp-items="Model.Categories" required>
-                                        </select>
-                                        <span asp-validation-for="Destination.CategoryId" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label asp-for="Destination.Rating" class="form-label">Đánh giá (0-5)</label>
-                                        <input asp-for="Destination.Rating" type="number" step="0.1" min="0" max="5" class="form-control">
-                                        <span asp-validation-for="Destination.Rating" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label asp-for="Destination.MainImage" class="form-label">Hình ảnh chính (URL)</label>
-                                <input asp-for="Destination.MainImage" class="form-control" placeholder="https://example.com/image.jpg">
-                                <span asp-validation-for="Destination.MainImage" class="text-danger"></span>
-                            </div>
+            <div class="admin-form-grid">
+                <section class="admin-form-card">
+                    <div class="admin-form-section-title">Thông tin chung</div>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label asp-for="Destination.Name" class="form-label">Tên điểm du lịch *</label>
+                            <input asp-for="Destination.Name" class="form-control" required>
+                            <span asp-validation-for="Destination.Name" class="text-danger"></span>
                         </div>
-
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <div class="form-check form-switch mb-3">
-                                    <input asp-for="Destination.IsFeatured" class="form-check-input" type="checkbox">
-                                    <label asp-for="Destination.IsFeatured" class="form-check-label">Điểm nổi bật</label>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="form-check form-switch mb-3">
-                                    <input asp-for="Destination.IsActive" class="form-check-input" type="checkbox">
-                                    <label asp-for="Destination.IsActive" class="form-check-label">Hoạt động</label>
-                                </div>
-                            </div>
+                        <div class="col-12">
+                            <label asp-for="Destination.ShortDescription" class="form-label">Mô tả ngắn</label>
+                            <textarea asp-for="Destination.ShortDescription" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Destination.ShortDescription" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Destination.Description" class="form-label">Mô tả chi tiết *</label>
+                            <textarea asp-for="Destination.Description" class="form-control" rows="6" required></textarea>
+                            <span asp-validation-for="Destination.Description" class="text-danger"></span>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between mt-4">
-                        <a asp-page="/Admin/Destinations/Index" class="btn btn-outline-secondary">
-                            <i class="fas fa-times me-2"></i>Hủy
-                        </a>
-                        <button type="submit" class="btn btn-admin-primary">
-                            <i class="fas fa-save me-2"></i>Cập nhật
-                        </button>
+                    <div class="admin-form-divider"></div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label asp-for="Destination.Location" class="form-label">Địa điểm *</label>
+                            <input asp-for="Destination.Location" class="form-control" required>
+                            <span asp-validation-for="Destination.Location" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Destination.Province" class="form-label">Tỉnh/Thành phố *</label>
+                            <input asp-for="Destination.Province" class="form-control" required>
+                            <span asp-validation-for="Destination.Province" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Destination.CategoryId" class="form-label">Loại *</label>
+                            <select asp-for="Destination.CategoryId" class="form-select" asp-items="Model.Categories" required></select>
+                            <span asp-validation-for="Destination.CategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Destination.Rating" class="form-label">Đánh giá (0-5)</label>
+                            <input asp-for="Destination.Rating" type="number" step="0.1" min="0" max="5" class="form-control">
+                            <span asp-validation-for="Destination.Rating" class="text-danger"></span>
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Destination.MainImage" class="form-label">Hình ảnh chính (URL)</label>
+                            <input asp-for="Destination.MainImage" class="form-control" placeholder="https://example.com/image.jpg">
+                            <span asp-validation-for="Destination.MainImage" class="text-danger"></span>
+                        </div>
                     </div>
-                </form>
+                </section>
+
+                <aside class="admin-form-sidebar">
+                    <div>
+                        <h4>Hiển thị</h4>
+                        <p class="text-muted">Điều chỉnh trạng thái và mức độ nổi bật của điểm du lịch.</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input asp-for="Destination.IsFeatured" class="form-check-input" type="checkbox">
+                        <label asp-for="Destination.IsFeatured" class="form-check-label">Đánh dấu là điểm nổi bật</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input asp-for="Destination.IsActive" class="form-check-input" type="checkbox">
+                        <label asp-for="Destination.IsActive" class="form-check-label">Hoạt động trong hệ thống</label>
+                    </div>
+                </aside>
             </div>
-        </div>
+
+            <div class="admin-form-actions">
+                <a asp-page="/Admin/Destinations/Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-times me-2"></i>Hủy
+                </a>
+                <button type="submit" class="btn btn-admin-primary">
+                    <i class="fas fa-save me-2"></i>Cập nhật
+                </button>
+            </div>
+        </form>
     </div>
 }
 
