@@ -94,7 +94,7 @@ public class DbSeeder
                     Location = "Xã Ba Đồng, Huyện Ba Đồng",
                     Province = "Quảng Bình",
                     CategoryId = bienlCategory.Id,
-                    MainImage = "/images/destinations/badong-beach.jpg",
+                    MainImage = "https://zoomtravel.vn/upload/images/GI%E1%BB%9AI%20THI%E1%BB%86U.jpg",
                     Rating = 4.5m,
                     IsFeatured = true,
                     IsActive = true
@@ -107,7 +107,7 @@ public class DbSeeder
                     Location = "Thị trấn Ba Đồng",
                     Province = "Quảng Bình",
                     CategoryId = nuiCategory.Id,
-                    MainImage = "/images/destinations/phuoc-tuong.jpg",
+                    MainImage = "https://images.vietnamtourism.gov.vn/vn//images/2014/AnhInternet/phuoc-tuong.jpg",
                     Rating = 4.3m,
                     IsFeatured = true,
                     IsActive = true
@@ -120,7 +120,7 @@ public class DbSeeder
                     Location = "Thôn Trung, Xã Ba Đồng",
                     Province = "Quảng Bình",
                     CategoryId = vanhoaCategory.Id,
-                    MainImage = "/images/destinations/dinh-lang.jpg",
+                    MainImage = "https://cdnphoto.dantri.com.vn/Gc0MOxJPQOMj_tkcwME4ZAToI3Y=/2021/04/16/1-dinh-bang-1618582135306.jpg",
                     Rating = 4.0m,
                     IsFeatured = false,
                     IsActive = true
@@ -133,7 +133,7 @@ public class DbSeeder
                     Location = "Xã Ba Đồng",
                     Province = "Quảng Bình",
                     CategoryId = await _context.Categories.Where(c => c.Name == "Sinh thái").Select(c => c.Id).FirstAsync(),
-                    MainImage = "/images/destinations/eco-garden.jpg",
+                    MainImage = "https://cdn.thuvienphapluat.vn/uploads/phapluat/2022-2/TS/17-07/vuon-quoc-gia-ba-vi.jpg",
                     Rating = 4.2m,
                     IsFeatured = true,
                     IsActive = true
@@ -159,7 +159,7 @@ public class DbSeeder
                     MaxParticipants = 20,
                     StartDate = DateTime.UtcNow.AddDays(7),
                     EndDate = DateTime.UtcNow.AddDays(9),
-                    MainImage = "/images/tours/tour-2d1n.jpg",
+                    MainImage = "https://luxtour.com.vn/wp-content/uploads/2021/11/tour-bai-dong-2-ngay-1-dem-4-e1749003424672.jpg",
                     Rating = 4.6m,
                     IsFeatured = true,
                     IsActive = true
@@ -174,7 +174,7 @@ public class DbSeeder
                     MaxParticipants = 30,
                     StartDate = DateTime.UtcNow.AddDays(3),
                     EndDate = DateTime.UtcNow.AddDays(3),
-                    MainImage = "/images/tours/tour-1d-beach.jpg",
+                    MainImage = "https://zoomtravel.vn/upload/images/GI%E1%BB%9AI%20THI%E1%BB%86U.jpg",
                     Rating = 4.4m,
                     IsFeatured = true,
                     IsActive = true
