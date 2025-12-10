@@ -444,7 +444,11 @@ a {
 }
 
 .badge-category {
-  background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+  background: linear-gradient(
+    135deg,
+    var(--primary-blue),
+    var(--primary-blue-light)
+  );
   color: white;
   padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
