@@ -4,13 +4,18 @@ Website quản lý và đặt tour du lịch Ba Đống - ASP.NET Core 9.0Đồ 
 
 ## 📋 Giới thiệu## 👥 Thông tin sinh viên
 
-Website du lịch Ba Đống cung cấp các tính năng:- **Họ tên**:
+- **Họ tên**: Huỳnh Việt Thắng
+- **MSSV**: 470123183
+- **Giảng viên hướng dẫn**: Thầy TS. Đoàn Phước Miền
+- **Lớp**: VX23TTK13
 
-- **Khách hàng**: Xem điểm du lịch, tours, đặt tour online, quản lý booking- **MSSV**:
+Website du lịch Ba Đống cung cấp các tính năng:
 
-- **Admin**: Quản lý destinations, tours, bookings, users- **Lớp**: VX23TTK13
+- **Khách hàng**: Xem điểm du lịch, tours, đặt tour online, quản lý booking
 
-- **Authentication**: Đăng ký, đăng nhập với phân quyền (Admin/Customer)- **Giảng viên hướng dẫn**:
+- **Admin**: Quản lý destinations, tours, bookings, users
+
+- **Authentication**: Đăng ký, đăng nhập với phân quyền (Admin/Customer)
 
 ## 🛠️ Công nghệ## 📋 Mô tả đồ án
 
