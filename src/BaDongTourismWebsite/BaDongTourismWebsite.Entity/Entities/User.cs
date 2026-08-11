@@ -31,6 +31,4 @@ public class User : BaseEntity
     
     // Navigation properties
     public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

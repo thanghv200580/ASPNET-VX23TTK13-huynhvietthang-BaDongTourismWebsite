@@ -6,21 +6,11 @@ namespace BaDongTourismWebsite.DAL.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext _context;
-    private IDestinationRepository? _destinationRepository;
     private Dictionary<Type, object>? _repositories;
 
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
-    }
-
-    public IDestinationRepository Destinations
-    {
-        get
-        {
-            _destinationRepository ??= new DestinationRepository(_context);
-            return _destinationRepository;
-        }
     }
 
     public IRepository<T> Repository<T>() where T : class
