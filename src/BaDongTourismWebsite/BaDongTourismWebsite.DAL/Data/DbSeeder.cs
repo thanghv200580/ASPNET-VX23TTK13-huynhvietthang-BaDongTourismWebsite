@@ -6,343 +6,84 @@ namespace BaDongTourismWebsite.DAL.Data;
 public class DbSeeder
 {
     private readonly ApplicationDbContext _context;
-    
+
     public DbSeeder(ApplicationDbContext context)
     {
         _context = context;
     }
-    
+
     public async Task SeedAsync()
     {
-        // Ensure database is created
         await _context.Database.MigrateAsync();
-        
+
         // Seed Roles
         if (!await _context.Roles.AnyAsync())
         {
             var roles = new List<Role>
             {
-                new Role { Name = "Admin", Description = "Administrator with full access" },
-                new Role { Name = "Staff", Description = "Staff member with limited access" },
-                new Role { Name = "Customer", Description = "Regular customer" },
-                new Role { Name = "Guest", Description = "Guest user" }
+                new Role { Name = "Admin", Description = "Quản trị viên toàn quyền" },
+                new Role { Name = "Staff", Description = "Nhân viên quản lý nội dung" }
             };
-            
             await _context.Roles.AddRangeAsync(roles);
             await _context.SaveChangesAsync();
         }
-        
+
         // Seed Admin User
         if (!await _context.Users.AnyAsync())
         {
             var adminUser = new User
             {
-                FullName = "Administrator",
+                FullName = "Quản trị viên",
                 Email = "admin@badong.com",
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-                PhoneNumber = "0123456789",
+                PhoneNumber = "0294.123.456",
                 IsActive = true,
                 IsEmailConfirmed = true
             };
-            
             await _context.Users.AddAsync(adminUser);
             await _context.SaveChangesAsync();
-            
-            // Assign Admin role
+
             var adminRole = await _context.Roles.FirstAsync(r => r.Name == "Admin");
-            var userRole = new UserRole
-            {
-                UserId = adminUser.Id,
-                RoleId = adminRole.Id
-            };
-            
-            await _context.UserRoles.AddAsync(userRole);
+            await _context.UserRoles.AddAsync(new UserRole { UserId = adminUser.Id, RoleId = adminRole.Id });
             await _context.SaveChangesAsync();
         }
-        
-        // Seed Categories
-        if (!await _context.Categories.AnyAsync())
+
+        // Seed BeachInfo (single record)
+        if (!await _context.BeachInfos.AnyAsync())
         {
-            var categories = new List<Category>
+            var beachInfo = new BeachInfo
             {
-                new Category { Name = "Biển", Description = "Các điểm du lịch biển đảo", Icon = "fa-water", IsActive = true },
-                new Category { Name = "Núi", Description = "Các điểm du lịch núi non", Icon = "fa-mountain", IsActive = true },
-                new Category { Name = "Văn hóa", Description = "Di tích văn hóa, lịch sử", Icon = "fa-landmark", IsActive = true },
-                new Category { Name = "Thiên nhiên", Description = "Vườn quốc gia, rừng nhiệt đới", Icon = "fa-tree", IsActive = true },
-                new Category { Name = "Đô thị", Description = "Khu đô thị, thành phố", Icon = "fa-city", IsActive = true },
-                new Category { Name = "Sinh thái", Description = "Du lịch sinh thái", Icon = "fa-leaf", IsActive = true }
+                Title = "Biển Ba Động - Trà Vinh",
+                Subtitle = "Bãi biển hoang sơ đẹp nhất vùng Đồng bằng sông Cửu Long",
+                HeroImageUrl = "https://i2.ex-cdn.com/crystalbay.com/files/content/2025/03/09/bien-ba-dong-1-0006.jpg",
+                OverviewText = "Bãi biển Ba Động thuộc xã Trường Long Hòa, huyện Duyên Hải, tỉnh Trà Vinh — cách thành phố Trà Vinh khoảng 50km về phía đông nam. Với chiều dài hơn 10km, cát vàng mịn và sóng biển trong xanh, Ba Động được mệnh danh là một trong những bãi biển đẹp và hoang sơ nhất vùng ĐBSCL. Nơi đây vẫn giữ được vẻ nguyên sơ, tĩnh lặng — lý tưởng cho những ai muốn thoát khỏi nhịp sống ồn ào của thành phố.",
+                NatureText = "Dọc bờ biển Ba Động là dải rừng phòng hộ phi lao (dương liễu) xanh mát, tạo bóng râm tự nhiên và là lá chắn chống xói mòn. Phía sau bờ biển là đầm Cồn Chim — một hệ sinh thái đất ngập nước phong phú, nơi sinh sống của hàng trăm loài chim nước và thủy sinh vật. Hoàng hôn trên biển Ba Động là khoảnh khắc không thể bỏ lỡ.",
+                CultureText = "Ba Động là vùng đất giàu truyền thống văn hóa. Đền thờ Bác Hồ nằm ngay cạnh bờ biển là công trình tâm linh quan trọng. Cộng đồng người Khmer sinh sống tại đây với những ngôi chùa cổ kính, lễ hội Ok Om Bok và nghề đan lát truyền thống. Lễ Nghinh Ông (cúng Ông) hàng năm thu hút đông đảo ngư dân và du khách.",
+                TravelTipsText = "Di chuyển: Từ TP.HCM đến Trà Vinh khoảng 200km (4–5 giờ xe), sau đó đến huyện Duyên Hải thêm 50km. Có xe khách tuyến HCM–Trà Vinh hàng ngày. Thời điểm lý tưởng: Tháng 11 đến tháng 4 (mùa khô). Tránh tháng 6–9 (mùa mưa, sóng lớn). Lưu ý: Mang kem chống nắng, đặt chỗ lưu trú sớm vào dịp lễ Tết.",
+                FoodText = "Hải sản Ba Động nổi tiếng với tôm, cua, ghẹ, nghêu, ốc tươi sống đánh bắt trong ngày. Đặc sản: bún nước lèo (đặc sản Khmer), bánh tét lá cẩm, mắm rươi, cá khô một nắng. Dọc bờ biển có nhiều quán ăn dân dã với giá bình dân.",
+                Location = "Xã Trường Long Hòa, Huyện Duyên Hải, Tỉnh Trà Vinh",
+                MapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62893.0!2d106.6!3d9.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a074b87a000001!2sDuyen+Hai+District!5e0!3m2!1svi!2svn!4v1",
+                ContactPhone = "0294.123.456",
+                ContactEmail = "info@badong.com",
+                UpdatedDate = DateTime.Now
             };
-            
-            await _context.Categories.AddRangeAsync(categories);
+            await _context.BeachInfos.AddAsync(beachInfo);
             await _context.SaveChangesAsync();
         }
-        
-        // Seed Sample Destinations
-        if (!await _context.Destinations.AnyAsync())
+
+        // Seed Beach Services
+        if (!await _context.BeachServices.AnyAsync())
         {
-            var bienlCategory = await _context.Categories.FirstAsync(c => c.Name == "Biển");
-            var nuiCategory = await _context.Categories.FirstAsync(c => c.Name == "Núi");
-            var vanhoaCategory = await _context.Categories.FirstAsync(c => c.Name == "Văn hóa");
-            
-            var destinations = new List<Destination>
+            var services = new List<BeachService>
             {
-                new Destination
-                {
-                    Name = "Bãi biển Ba Đồng",
-                    ShortDescription = "Bãi biển hoang sơ với cát trắng mịn và nước biển trong xanh",
-                    Description = "Bãi biển Ba Đồng là một trong những bãi biển đẹp nhất khu vực với cát trắng mịn, nước biển trong xanh. Đây là điểm đến lý tưởng cho những ai yêu thích tắm biển và các hoạt động thể thao dưới nước.",
-                    Location = "Xã Ba Đồng, Huyện Ba Đồng",
-                    Province = "Quảng Bình",
-                    CategoryId = bienlCategory.Id,
-                    MainImage = "https://zoomtravel.vn/upload/images/GI%E1%BB%9AI%20THI%E1%BB%86U.jpg",
-                    Rating = 4.5m,
-                    IsFeatured = true,
-                    IsActive = true
-                },
-                new Destination
-                {
-                    Name = "Núi Phước Tượng",
-                    ShortDescription = "Ngọn núi hùng vĩ với tượng Phật khổng lồ",
-                    Description = "Núi Phước Tượng nổi tiếng với pho tượng Phật khổng lồ trên đỉnh núi. Từ đây có thể ngắm toàn cảnh vùng Ba Đồng tuyệt đẹp.",
-                    Location = "Thị trấn Ba Đồng",
-                    Province = "Quảng Bình",
-                    CategoryId = nuiCategory.Id,
-                    MainImage = "https://images.vietnamtourism.gov.vn/vn//images/2014/AnhInternet/phuoc-tuong.jpg",
-                    Rating = 4.3m,
-                    IsFeatured = true,
-                    IsActive = true
-                },
-                new Destination
-                {
-                    Name = "Đình làng cổ Ba Đồng",
-                    ShortDescription = "Di tích lịch sử văn hóa được công nhận cấp tỉnh",
-                    Description = "Đình làng Ba Đồng được xây dựng từ thế kỷ 18, là nơi thờ Thành hoàng làng và tổ chức các lễ hội truyền thống. Kiến trúc cổ kính, mang đậm nét văn hóa dân gian miền Trung.",
-                    Location = "Thôn Trung, Xã Ba Đồng",
-                    Province = "Quảng Bình",
-                    CategoryId = vanhoaCategory.Id,
-                    MainImage = "https://cdnphoto.dantri.com.vn/Gc0MOxJPQOMj_tkcwME4ZAToI3Y=/2021/04/16/1-dinh-bang-1618582135306.jpg",
-                    Rating = 4.0m,
-                    IsFeatured = false,
-                    IsActive = true
-                },
-                new Destination
-                {
-                    Name = "Vườn sinh thái Ba Đồng",
-                    ShortDescription = "Vườn sinh thái với đa dạng sinh học phong phú",
-                    Description = "Vườn sinh thái Ba Đồng có diện tích rộng với nhiều loại cây trái nhiệt đới, khu vườn chim, ao nuôi cá. Đây là địa điểm lý tưởng cho các hoạt động dã ngoại và tìm hiểu thiên nhiên.",
-                    Location = "Xã Ba Đồng",
-                    Province = "Quảng Bình",
-                    CategoryId = await _context.Categories.Where(c => c.Name == "Sinh thái").Select(c => c.Id).FirstAsync(),
-                    MainImage = "https://cdn.thuvienphapluat.vn/uploads/phapluat/2022-2/TS/17-07/vuon-quoc-gia-ba-vi.jpg",
-                    Rating = 4.2m,
-                    IsFeatured = true,
-                    IsActive = true
-                }
+                new BeachService { Name = "Lướt sóng (Surfing)", Description = "Trải nghiệm môn thể thao lướt sóng hấp dẫn. Hướng dẫn viên kèm cặp từng bước. Ván surf và thiết bị bảo hộ đầy đủ được cung cấp.", Price = 250000, PriceUnit = "/ người / giờ", MainImage = "https://waterbeartour.com.vn/upload/filemanage/ls2.png", ContactPhone = "0294.111.222", IsActive = true, DisplayOrder = 1 },
+                new BeachService { Name = "Thuê cano tốc độ cao", Description = "Lướt cano tốc độ cao trên mặt biển Ba Động. Mỗi chuyến 30 phút, sức chứa 6–8 người. Áo phao và thiết bị an toàn đầy đủ.", Price = 500000, PriceUnit = "/ chuyến 30 phút", MainImage = "https://culaoxanhtourist.com/wp-content/uploads/2021/05/18.jpg", ContactPhone = "0294.333.444", IsActive = true, DisplayOrder = 2 },
+                new BeachService { Name = "Tàu chuối (Banana Boat)", Description = "Trò chơi tàu chuối sôi động cho cả nhóm. Mỗi lượt 15 phút, sức chứa 4–6 người. Phao cứu sinh và áo phao bắt buộc.", Price = 150000, PriceUnit = "/ người / lượt", MainImage = "https://quangthangcatba.com/image/catalog/Tin%20t%E1%BB%A9c/c%C3%A1t%20b%C3%A0%202/phao-chuoi-cat-ba-1.jpg", ContactPhone = "0294.555.666", IsActive = true, DisplayOrder = 3 },
+                new BeachService { Name = "Thuyền kayak đôi", Description = "Chèo kayak khám phá vùng ven biển Ba Động. Không cần kinh nghiệm. Tuyến đường qua khu rừng phòng hộ và vùng biển gần bờ.", Price = 120000, PriceUnit = "/ thuyền / giờ", MainImage = "https://cdn.haikayak.com/wp-content/uploads/2022/09/306508528_486365130164241_9061737415146049157_n.jpg", ContactPhone = "0294.777.888", IsActive = true, DisplayOrder = 4 },
+                new BeachService { Name = "Lặn snorkel ngắm san hô", Description = "Khám phá thế giới dưới nước. Kính lặn, ống thở và chân nhái được cung cấp. Không phù hợp trẻ dưới 10 tuổi và người không biết bơi.", Price = 200000, PriceUnit = "/ người / buổi", MainImage = "https://phuquocxanh.com/vi/wp-content/uploads/2016/03/c%C3%A2u-c%C3%A1-l%E1%BA%B7n-ng%E1%BA%AFm-san-h%C3%B4-Ph%C3%BA-Qu%E1%BB%91c-1.jpg", ContactPhone = "0294.999.000", IsActive = true, DisplayOrder = 5 }
             };
-            
-            await _context.Destinations.AddRangeAsync(destinations);
-            await _context.SaveChangesAsync();
-        }
-        
-        // Seed Sample Tours
-        if (!await _context.Tours.AnyAsync())
-        {
-            var tours = new List<Tour>
-            {
-                new Tour
-                {
-                    Name = "Tour khám phá Ba Đồng 2 ngày 1 đêm",
-                    ShortDescription = "Trải nghiệm đầy đủ các điểm du lịch nổi bật",
-                    Description = "Tour du lịch Ba Đồng 2 ngày 1 đêm đưa bạn khám phá các điểm đến đẹp nhất khu vực: Bãi biển Ba Đồng, Núi Phước Tượng, Đình làng cổ và Vườn sinh thái.",
-                    Price = 1500000,
-                    Duration = 2,
-                    MaxParticipants = 20,
-                    StartDate = DateTime.UtcNow.AddDays(7),
-                    EndDate = DateTime.UtcNow.AddDays(9),
-                    MainImage = "https://luxtour.com.vn/wp-content/uploads/2021/11/tour-bai-dong-2-ngay-1-dem-4-e1749003424672.jpg",
-                    Rating = 4.6m,
-                    IsFeatured = true,
-                    IsActive = true
-                },
-                new Tour
-                {
-                    Name = "Tour 1 ngày trải nghiệm biển Ba Đồng",
-                    ShortDescription = "Tận hưởng một ngày vui chơi tại bãi biển",
-                    Description = "Tour 1 ngày đưa bạn đến bãi biển Ba Đồng với các hoạt động: tắm biển, lặn ngắm san hô, thưởng thức hải sản tươi sống.",
-                    Price = 500000,
-                    Duration = 1,
-                    MaxParticipants = 30,
-                    StartDate = DateTime.UtcNow.AddDays(3),
-                    EndDate = DateTime.UtcNow.AddDays(3),
-                    MainImage = "https://zoomtravel.vn/upload/images/GI%E1%BB%9AI%20THI%E1%BB%86U.jpg",
-                    Rating = 4.4m,
-                    IsFeatured = true,
-                    IsActive = true
-                }
-            };
-            
-            await _context.Tours.AddRangeAsync(tours);
-            await _context.SaveChangesAsync();
-            
-            // Seed Tour Destinations (liên kết tour với điểm đến)
-            var tour2d1n = await _context.Tours.FirstAsync(t => t.Name.Contains("2 ngày 1 đêm"));
-            var tourBeach = await _context.Tours.FirstAsync(t => t.Name.Contains("1 ngày"));
-            var destBeach = await _context.Destinations.FirstAsync(d => d.Name.Contains("Bãi biển"));
-            var destMountain = await _context.Destinations.FirstAsync(d => d.Name.Contains("Núi Phước"));
-            var destTemple = await _context.Destinations.FirstAsync(d => d.Name.Contains("Đình làng"));
-            var destEco = await _context.Destinations.FirstAsync(d => d.Name.Contains("Vườn sinh thái"));
-            
-            var tourDestinations = new List<TourDestination>
-            {
-                new TourDestination { TourId = tour2d1n.Id, DestinationId = destBeach.Id, DisplayOrder = 1 },
-                new TourDestination { TourId = tour2d1n.Id, DestinationId = destMountain.Id, DisplayOrder = 2 },
-                new TourDestination { TourId = tour2d1n.Id, DestinationId = destTemple.Id, DisplayOrder = 3 },
-                new TourDestination { TourId = tour2d1n.Id, DestinationId = destEco.Id, DisplayOrder = 4 },
-                new TourDestination { TourId = tourBeach.Id, DestinationId = destBeach.Id, DisplayOrder = 1 }
-            };
-            
-            await _context.TourDestinations.AddRangeAsync(tourDestinations);
-            await _context.SaveChangesAsync();
-        }
-        
-        // Seed Sample Customers
-        if (await _context.Users.CountAsync() == 1) // Chỉ có admin
-        {
-            var customerRole = await _context.Roles.FirstAsync(r => r.Name == "Customer");
-            
-            var customers = new List<User>
-            {
-                new User
-                {
-                    FullName = "Nguyễn Văn An",
-                    Email = "nguyenvanan@example.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Customer@123"),
-                    PhoneNumber = "0987654321",
-                    IsActive = true,
-                    IsEmailConfirmed = true
-                },
-                new User
-                {
-                    FullName = "Trần Thị Bình",
-                    Email = "tranthibinh@example.com",
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("Customer@123"),
-                    PhoneNumber = "0976543210",
-                    IsActive = true,
-                    IsEmailConfirmed = true
-                }
-            };
-            
-            await _context.Users.AddRangeAsync(customers);
-            await _context.SaveChangesAsync();
-            
-            // Assign Customer role
-            foreach (var customer in customers)
-            {
-                await _context.UserRoles.AddAsync(new UserRole
-                {
-                    UserId = customer.Id,
-                    RoleId = customerRole.Id
-                });
-            }
-            await _context.SaveChangesAsync();
-        }
-        
-        // Seed Sample Reviews
-        if (!await _context.Reviews.AnyAsync())
-        {
-            var customer = await _context.Users.FirstAsync(u => u.Email.Contains("nguyenvanan"));
-            var destBeach = await _context.Destinations.FirstAsync(d => d.Name.Contains("Bãi biển"));
-            var destMountain = await _context.Destinations.FirstAsync(d => d.Name.Contains("Núi Phước"));
-            
-            var reviews = new List<Review>
-            {
-                new Review
-                {
-                    UserId = customer.Id,
-                    DestinationId = destBeach.Id,
-                    Rating = 5,
-                    Title = "Bãi biển tuyệt vời",
-                    Content = "Bãi biển rất đẹp và sạch sẽ. Cát trắng mịn, nước trong xanh. Rất phù hợp cho gia đình có trẻ nhỏ!",
-                    IsApproved = true
-                },
-                new Review
-                {
-                    UserId = customer.Id,
-                    DestinationId = destMountain.Id,
-                    Rating = 4,
-                    Title = "Phong cảnh đẹp",
-                    Content = "Phong cảnh đẹp, không khí trong lành. Tuy nhiên đường lên hơi khó đi với người già.",
-                    IsApproved = true
-                }
-            };
-            
-            await _context.Reviews.AddRangeAsync(reviews);
-            await _context.SaveChangesAsync();
-        }
-        
-        // Seed Accommodations
-        if (!await _context.Accommodations.AnyAsync())
-        {
-            var accommodations = new List<Accommodation>
-            {
-                new Accommodation
-                {
-                    Name = "Khách sạn Ba Đồng Beach",
-                    Description = "Khách sạn 3 sao view biển, cách bãi biển 50m",
-                    Location = "123 Đường Biển, Xã Ba Đồng",
-                    PhoneNumber = "0236.123.456",
-                    Email = "badongbeach@hotel.com",
-                    PriceFrom = 500000,
-                    Rating = 4.2m,
-                    IsActive = true
-                },
-                new Accommodation
-                {
-                    Name = "Homestay Vườn Xanh",
-                    Description = "Homestay gia đình ấm cúng, gần vườn sinh thái",
-                    Location = "45 Thôn 2, Xã Ba Đồng",
-                    PhoneNumber = "0236.789.012",
-                    Email = "vuonxanh@homestay.com",
-                    PriceFrom = 300000,
-                    Rating = 4.5m,
-                    IsActive = true
-                }
-            };
-            
-            await _context.Accommodations.AddRangeAsync(accommodations);
-            await _context.SaveChangesAsync();
-        }
-        
-        // Seed Restaurants
-        if (!await _context.Restaurants.AnyAsync())
-        {
-            var restaurants = new List<Restaurant>
-            {
-                new Restaurant
-                {
-                    Name = "Nhà hàng Hải sản Ba Đồng",
-                    Description = "Hải sản tươi sống, giá cả phải chăng",
-                    Location = "Bãi biển Ba Đồng",
-                    PhoneNumber = "0236.345.678",
-                    Cuisine = "Hải sản",
-                    AveragePricePerPerson = 300000,
-                    Rating = 4.3m,
-                    IsActive = true
-                },
-                new Restaurant
-                {
-                    Name = "Quán Cơm Quê",
-                    Description = "Các món ăn đặc sản địa phương",
-                    Location = "Thị trấn Ba Đồng",
-                    PhoneNumber = "0236.456.789",
-                    Cuisine = "Ẩm thực miền Trung",
-                    AveragePricePerPerson = 100000,
-                    Rating = 4.0m,
-                    IsActive = true
-                }
-            };
-            
-            await _context.Restaurants.AddRangeAsync(restaurants);
+
+            await _context.BeachServices.AddRangeAsync(services);
             await _context.SaveChangesAsync();
         }
     }

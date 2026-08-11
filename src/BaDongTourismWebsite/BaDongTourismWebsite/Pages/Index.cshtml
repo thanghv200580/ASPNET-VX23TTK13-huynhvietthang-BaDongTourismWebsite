@@ -1,182 +1,190 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Trang chủ";
+    ViewData["Title"] = Model.Info?.Title ?? "Biển Ba Động - Trà Vinh";
+    var info = Model.Info;
 }
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-        <div class="row">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="hero-title">Khám Phá Vẻ Đẹp Ba Đồng</h1>
-                <p class="hero-subtitle">Trải nghiệm những điểm đến tuyệt vời, văn hóa độc đáo và thiên nhiên hoang sơ</p>
-                <div class="hero-search">
-                    <form class="d-flex">
-                        <input class="form-control form-control-lg me-2" type="search" placeholder="Tìm kiếm điểm đến..." aria-label="Search">
-                        <button class="btn btn-primary-custom btn-lg" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Services Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-3 col-sm-6 service-item text-center">
-                <div class="service-icon">
-                    <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <h5>Điểm Du lịch</h5>
-                <p>Khám phá các địa điểm đẹp nhất</p>
-            </div>
-            <div class="col-md-3 col-sm-6 service-item text-center">
-                <div class="service-icon">
-                    <i class="fas fa-route"></i>
-                </div>
-                <h5>Tours Đa dạng</h5>
-                <p>Lựa chọn tour phù hợp</p>
-            </div>
-            <div class="col-md-3 col-sm-6 service-item text-center">
-                <div class="service-icon">
-                    <i class="fas fa-hotel"></i>
-                </div>
-                <h5>Lưu trú</h5>
-                <p>Khách sạn, homestay chất lượng</p>
-            </div>
-            <div class="col-md-3 col-sm-6 service-item text-center">
-                <div class="service-icon">
-                    <i class="fas fa-utensils"></i>
-                </div>
-                <h5>Ẩm thực</h5>
-                <p>Thưởng thức đặc sản địa phương</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Featured Destinations -->
-<section class="py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Điểm Đến Nổi Bật</h2>
-            <p class="section-subtitle">Khám phá những địa điểm du lịch tuyệt vời tại Ba Đồng</p>
-        </div>
-        <div class="row g-4">
-            @if (Model.FeaturedDestinations.Any())
-            {
-                @foreach (var destination in Model.FeaturedDestinations)
-                {
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card destination-card">
-                            <div class="position-relative">
-                                <img src="@(destination.MainImage ?? "/images/placeholder-destination.jpg")" 
-                                     class="destination-image" 
-                                     alt="@destination.Name">
-                                <span class="badge-category">@destination.Category.Name</span>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="destination-title">@destination.Name</h5>
-                                <p class="destination-location">
-                                    <i class="fas fa-map-marker-alt me-1"></i>@destination.Location, @destination.Province
-                                </p>
-                                <p class="card-text">@destination.ShortDescription</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="destination-rating">
-                                        <i class="fas fa-star"></i> @destination.Rating.ToString("0.0")
-                                    </span>
-                                    <a asp-page="/Destinations/Details" asp-route-id="@destination.Id" class="btn btn-outline-custom btn-sm">
-                                        Xem chi tiết <i class="fas fa-arrow-right ms-1"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-12 text-center">
-                    <p class="text-muted">Chưa có điểm đến nào được thêm vào.</p>
-                </div>
-            }
-        </div>
-        <div class="text-center mt-4">
-            <a asp-page="/Destinations/Index" class="btn btn-primary-custom">
-                Xem tất cả <i class="fas fa-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Popular Tours -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="section-title">Tours Phổ Biến</h2>
-            <p class="section-subtitle">Những chương trình tour được yêu thích nhất</p>
-        </div>
-        <div class="row g-4">
-            @if (Model.PopularTours.Any())
-            {
-                @foreach (var tour in Model.PopularTours)
-                {
-                    <div class="col-lg-3 col-md-6">
-                        <div class="card tour-card">
-                            <img src="@(tour.MainImage ?? "/images/placeholder-tour.jpg")" 
-                                 class="tour-image" 
-                                 alt="@tour.Name">
-                            <div class="card-body">
-                                <h5 class="card-title">@tour.Name</h5>
-                                <p class="tour-duration">
-                                    <i class="fas fa-clock me-1"></i>@tour.Duration ngày
-                                </p>
-                                <p class="card-text small">@tour.ShortDescription</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="tour-price">@tour.Price.ToString("N0")đ</span>
-                                    <a asp-page="/Tours/Details" asp-route-id="@tour.Id" class="btn btn-primary-custom btn-sm">
-                                        Đặt ngay
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-12 text-center">
-                    <p class="text-muted">Chưa có tour nào được thêm vào.</p>
-                </div>
-            }
-        </div>
-        <div class="text-center mt-4">
-            <a asp-page="/Tours/Index" class="btn btn-primary-custom">
-                Xem tất cả tours <i class="fas fa-arrow-right ms-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="py-5 cta-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 text-white">
-                <h3 class="mb-3">Bạn cần tư vấn về chuyến du lịch?</h3>
-                <p class="mb-0">Liên hệ với chúng tôi để nhận được những gợi ý tốt nhất cho chuyến đi của bạn</p>
-            </div>
-            <div class="col-lg-4 text-end">
-                <a asp-page="/Contact" class="btn btn-light btn-lg">
-                    <i class="fas fa-phone me-2"></i>Liên hệ ngay
+@* ===== HERO ===== *@
+<section class="hero-section position-relative overflow-hidden"
+         style="background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%); min-height: 520px;">
+    @if (!string.IsNullOrEmpty(info?.HeroImageUrl))
+    {
+        <div class="position-absolute w-100 h-100" style="top:0;left:0;background:url('@info.HeroImageUrl') center/cover no-repeat;opacity:.35;"></div>
+    }
+    <div class="container position-relative py-5 d-flex flex-column justify-content-center" style="min-height:520px;">
+        <div class="text-white text-center">
+            <p class="text-uppercase fw-semibold mb-2 opacity-75" style="letter-spacing:3px;">
+                <i class="fas fa-map-marker-alt me-2"></i>@(info?.Location ?? "Huyện Duyên Hải, Tỉnh Trà Vinh")
+            </p>
+            <h1 class="display-4 fw-bold mb-3">@(info?.Title ?? "Biển Ba Động - Trà Vinh")</h1>
+            <p class="fs-5 mb-4 opacity-90">@(info?.Subtitle ?? "Bãi biển hoang sơ đẹp nhất vùng Đồng bằng sông Cửu Long")</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="#gioi-thieu" class="btn btn-light btn-lg px-4">
+                    <i class="fas fa-info-circle me-2"></i>Tìm hiểu thêm
+                </a>
+                <a asp-page="/Services/Index" class="btn btn-outline-light btn-lg px-4">
+                    <i class="fas fa-water me-2"></i>Dịch vụ biển
                 </a>
             </div>
+        </div>
+    </div>
+</section>
+
+@* ===== TỔNG QUAN ===== *@
+<section id="gioi-thieu" class="py-5 bg-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="badge bg-primary mb-2">Tổng quan</span>
+                <h2 class="fw-bold mb-3">Giới thiệu về Biển Ba Động</h2>
+                <p class="text-muted lh-lg">@(info?.OverviewText ?? "")</p>
+                <div class="row g-3 mt-2">
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-ruler-horizontal text-primary fs-5"></i>
+                            <div><small class="text-muted d-block">Chiều dài bãi biển</small><strong>10+ km</strong></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-road text-primary fs-5"></i>
+                            <div><small class="text-muted d-block">Cách TP. Trà Vinh</small><strong>~50 km</strong></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-thermometer-half text-primary fs-5"></i>
+                            <div><small class="text-muted d-block">Mùa lý tưởng</small><strong>Tháng 11 – 4</strong></div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fas fa-fish text-primary fs-5"></i>
+                            <div><small class="text-muted d-block">Đặc sản</small><strong>Hải sản tươi sống</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                @if (!string.IsNullOrEmpty(info?.HeroImageUrl))
+                {
+                    <img src="@info.HeroImageUrl" class="img-fluid rounded-4 shadow" alt="Biển Ba Động"
+                         onerror="this.src='https://via.placeholder.com/600x400/0077b6/ffffff?text=Biển+Ba+Động'"/>
+                }
+                else
+                {
+                    <div class="rounded-4 shadow d-flex align-items-center justify-content-center text-white"
+                         style="background:linear-gradient(135deg,#0077b6,#023e8a);height:350px;">
+                        <i class="fas fa-umbrella-beach fa-5x opacity-50"></i>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ===== 4 TABS NỘI DUNG ===== *@
+<section class="py-5" style="background:#f8f9fa;">
+    <div class="container">
+        <ul class="nav nav-pills justify-content-center mb-4 flex-wrap gap-2" id="infoTabs" role="tablist">
+            <li class="nav-item"><button class="nav-link active px-4" data-bs-toggle="pill" data-bs-target="#tab-nature"><i class="fas fa-leaf me-2"></i>Thiên nhiên</button></li>
+            <li class="nav-item"><button class="nav-link px-4" data-bs-toggle="pill" data-bs-target="#tab-culture"><i class="fas fa-torii-gate me-2"></i>Văn hóa</button></li>
+            <li class="nav-item"><button class="nav-link px-4" data-bs-toggle="pill" data-bs-target="#tab-tips"><i class="fas fa-map-signs me-2"></i>Kinh nghiệm</button></li>
+            <li class="nav-item"><button class="nav-link px-4" data-bs-toggle="pill" data-bs-target="#tab-food"><i class="fas fa-utensils me-2"></i>Ẩm thực</button></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tab-nature">
+                <div class="card border-0 shadow-sm rounded-4 p-4 mx-auto" style="max-width:800px;">
+                    <h4 class="fw-bold mb-3"><i class="fas fa-leaf text-success me-2"></i>Thiên nhiên & Sinh thái</h4>
+                    <p class="text-muted lh-lg">@(info?.NatureText ?? "Thông tin đang được cập nhật.")</p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-culture">
+                <div class="card border-0 shadow-sm rounded-4 p-4 mx-auto" style="max-width:800px;">
+                    <h4 class="fw-bold mb-3"><i class="fas fa-torii-gate text-warning me-2"></i>Văn hóa & Lịch sử</h4>
+                    <p class="text-muted lh-lg">@(info?.CultureText ?? "Thông tin đang được cập nhật.")</p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-tips">
+                <div class="card border-0 shadow-sm rounded-4 p-4 mx-auto" style="max-width:800px;">
+                    <h4 class="fw-bold mb-3"><i class="fas fa-map-signs text-primary me-2"></i>Kinh nghiệm du lịch</h4>
+                    <p class="text-muted lh-lg">@(info?.TravelTipsText ?? "Thông tin đang được cập nhật.")</p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tab-food">
+                <div class="card border-0 shadow-sm rounded-4 p-4 mx-auto" style="max-width:800px;">
+                    <h4 class="fw-bold mb-3"><i class="fas fa-utensils text-danger me-2"></i>Ẩm thực đặc sản</h4>
+                    <p class="text-muted lh-lg">@(info?.FoodText ?? "Thông tin đang được cập nhật.")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ===== DỊCH VỤ TIÊU BIỂU ===== *@
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-primary mb-1">Hoạt động</span>
+                <h2 class="fw-bold mb-0">Dịch vụ trên biển nổi bật</h2>
+            </div>
+            <a asp-page="/Services/Index" class="btn btn-outline-primary">Xem tất cả <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="row g-4">
+            @foreach (var svc in Model.FeaturedServices)
+            {
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="bg-primary d-flex align-items-center justify-content-center text-white" style="height:140px;">
+                            <i class="fas fa-water fa-3x opacity-75"></i>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-1">@svc.Name</h6>
+                            <p class="text-muted small mb-2" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">@svc.Description</p>
+                            <span class="badge bg-success fs-6">@svc.Price.ToString("N0")đ @svc.PriceUnit</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@* ===== BẢN ĐỒ ===== *@
+@if (!string.IsNullOrEmpty(info?.MapEmbedUrl))
+{
+    <section class="py-5" style="background:#f8f9fa;">
+        <div class="container">
+            <h3 class="fw-bold text-center mb-4"><i class="fas fa-map-marked-alt text-primary me-2"></i>Vị trí Biển Ba Động</h3>
+            <div class="rounded-4 overflow-hidden shadow">
+                <iframe src="@info.MapEmbedUrl" width="100%" height="400" style="border:0;" allowfullscreen loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+}
+
+@* ===== LIÊN HỆ ===== *@
+<section class="py-5" style="background:linear-gradient(135deg,#0077b6,#023e8a);">
+    <div class="container text-white text-center">
+        <h3 class="fw-bold mb-3">Liên hệ & Thông tin</h3>
+        <div class="row justify-content-center g-4">
+            <div class="col-auto">
+                <i class="fas fa-map-marker-alt me-2"></i>@(info?.Location ?? "Huyện Duyên Hải, Trà Vinh")
+            </div>
+            @if (!string.IsNullOrEmpty(info?.ContactPhone))
+            {
+                <div class="col-auto">
+                    <i class="fas fa-phone me-2"></i><a href="tel:@info.ContactPhone" class="text-white text-decoration-none">@info.ContactPhone</a>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(info?.ContactEmail))
+            {
+                <div class="col-auto">
+                    <i class="fas fa-envelope me-2"></i><a href="mailto:@info.ContactEmail" class="text-white text-decoration-none">@info.ContactEmail</a>
+                </div>
+            }
         </div>
     </div>
 </section>

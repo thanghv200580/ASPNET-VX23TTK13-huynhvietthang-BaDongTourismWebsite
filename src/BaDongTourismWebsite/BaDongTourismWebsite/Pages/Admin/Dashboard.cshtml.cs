@@ -1,45 +1,28 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using BaDongTourismWebsite.BLL.Services;
-using BaDongTourismWebsite.DAL.UnitOfWork;
 
 namespace BaDongTourismWebsite.Pages.Admin;
 
 public class DashboardModel : PageModel
 {
-    private readonly IDestinationService _destinationService;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<DashboardModel> _logger;
+    private readonly IBeachServiceService _beachServiceService;
 
-    public DashboardModel(
-        IDestinationService destinationService,
-        IUnitOfWork unitOfWork,
-        ILogger<DashboardModel> logger)
+    public DashboardModel(IBeachServiceService beachServiceService)
     {
-        _destinationService = destinationService;
-        _unitOfWork = unitOfWork;
-        _logger = logger;
+        _beachServiceService = beachServiceService;
     }
 
-    public int TotalDestinations { get; set; }
-    public int TotalTours { get; set; }
-    public int TotalUsers { get; set; }
-    public int TotalBookings { get; set; }
-    public IEnumerable<BaDongTourismWebsite.Entity.Entities.Destination> FeaturedDestinations { get; set; } = new List<BaDongTourismWebsite.Entity.Entities.Destination>();
+    public int TotalBeachServices { get; set; }
 
     public async Task OnGetAsync()
     {
-        try
+        if (HttpContext.Session.GetString("UserId") == null)
         {
-            TotalDestinations = await _unitOfWork.Repository<BaDongTourismWebsite.Entity.Entities.Destination>().CountAsync();
-            TotalTours = await _unitOfWork.Repository<BaDongTourismWebsite.Entity.Entities.Tour>().CountAsync();
-            TotalUsers = await _unitOfWork.Repository<BaDongTourismWebsite.Entity.Entities.User>().CountAsync();
-            TotalBookings = await _unitOfWork.Repository<BaDongTourismWebsite.Entity.Entities.Booking>().CountAsync();
-            FeaturedDestinations = await _destinationService.GetFeaturedDestinationsAsync(5);
+            Response.Redirect("/Auth/Login");
+            return;
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error loading dashboard data");
-        }
+        TotalBeachServices = (await _beachServiceService.GetAllServicesAsync()).Count();
     }
 }
+
 

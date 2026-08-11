@@ -1,0 +1,66 @@
+@page
+@model BaDongTourismWebsite.Pages.Services.IndexModel
+@{
+    ViewData["Title"] = "Dịch Vụ Trên Biển";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="section-title">Dịch Vụ Trên Biển Ba Động</h1>
+        <p class="section-subtitle text-muted">Tham khảo các dịch vụ vui chơi, thể thao và khám phá biển tại Ba Động, Trà Vinh</p>
+    </div>
+
+    @if (Model.Services.Any())
+    {
+        <div class="row g-4">
+            @foreach (var svc in Model.Services)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow border-0">
+                        <div class="position-relative">
+                            <img src="@(svc.MainImage ?? "/images/placeholder-service.jpg")"
+                                 class="card-img-top"
+                                 style="height:220px;object-fit:cover;"
+                                 alt="@svc.Name">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="fw-bold mb-2">@svc.Name</h5>
+                            <div class="mb-2">
+                                <span class="fs-5 text-primary fw-bold">@svc.Price.ToString("N0")đ</span>
+                                @if (!string.IsNullOrEmpty(svc.PriceUnit))
+                                {
+                                    <span class="text-muted small ms-1">@svc.PriceUnit</span>
+                                }
+                            </div>
+                            <p class="card-text text-muted flex-grow-1">@svc.Description</p>
+                            @if (!string.IsNullOrEmpty(svc.ContactPhone))
+                            {
+                                <div class="mt-3 pt-3 border-top">
+                                    <i class="fas fa-phone text-success me-2"></i>
+                                    <a href="tel:@svc.ContactPhone" class="text-decoration-none fw-semibold">@svc.ContactPhone</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-water fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">Chưa có dịch vụ nào được cập nhật</h4>
+        </div>
+    }
+</div>
+
+<!-- Info Banner -->
+<section class="py-4 bg-primary text-white mt-3">
+    <div class="container text-center">
+        <p class="mb-0 fs-5">
+            <i class="fas fa-info-circle me-2"></i>
+            Giá dịch vụ chỉ mang tính tham khảo. Vui lòng liên hệ trực tiếp để biết giá chính xác và đặt lịch.
+        </p>
+    </div>
+</section>

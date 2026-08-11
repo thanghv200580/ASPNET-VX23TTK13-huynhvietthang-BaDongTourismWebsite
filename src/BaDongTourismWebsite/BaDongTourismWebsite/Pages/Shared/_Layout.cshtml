@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Du Lịch Ba Đồng</title>
+    <title>@ViewData["Title"] - Du Lịch Biển Ba Động Trà Vinh</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" asp-area="" asp-page="/Index">
-                <i class="fas fa-umbrella-beach me-2"></i>Du Lịch Ba Đồng
+                <i class="fas fa-umbrella-beach me-2"></i>Biển Ba Động - Trà Vinh
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -24,19 +24,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-page="/Index"><i class="fas fa-home me-1"></i>Trang chủ</a>
+                        <a class="nav-link" asp-page="/Index"><i class="fas fa-umbrella-beach me-1"></i>Biển Ba Động</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-page="/Destinations/Index"><i class="fas fa-map-marked-alt me-1"></i>Điểm du lịch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-page="/Tours/Index"><i class="fas fa-route me-1"></i>Tours</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-page="/About"><i class="fas fa-info-circle me-1"></i>Về chúng tôi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-page="/Contact"><i class="fas fa-envelope me-1"></i>Liên hệ</a>
+                        <a class="nav-link" asp-page="/Services/Index"><i class="fas fa-water me-1"></i>Dịch vụ trên biển</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -44,16 +35,10 @@
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i>@Context.Session.GetString("UserName")
+                                <i class="fas fa-user-shield me-1"></i>@Context.Session.GetString("UserName")
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i>Thông tin tài khoản</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Đơn đặt của tôi</a></li>
-                                @if (Context.Session.GetString("UserRole") == "Admin")
-                                {
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" asp-page="/Admin/Dashboard"><i class="fas fa-tachometer-alt me-2"></i>Quản trị</a></li>
-                                }
+                                <li><a class="dropdown-item" asp-page="/Admin/Dashboard"><i class="fas fa-tachometer-alt me-2"></i>Quản trị</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" asp-page="/Auth/Logout"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
                             </ul>
@@ -62,12 +47,7 @@
                     else
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-page="/Auth/Login"><i class="fas fa-sign-in-alt me-1"></i>Đăng nhập</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary text-white ms-2 px-3" asp-page="/Auth/Register" style="border-radius: 20px;">
-                                <i class="fas fa-user-plus me-1"></i>Đăng ký
-                            </a>
+                            <a class="nav-link" asp-page="/Auth/Login"><i class="fas fa-lock me-1"></i>Admin</a>
                         </li>
                     }
                 </ul>
@@ -79,6 +59,35 @@
 <main>
     @RenderBody()
 </main>
+
+@* <footer class="footer bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <h5><i class="fas fa-umbrella-beach me-2"></i>Biển Ba Động - Trà Vinh</h5>
+                <p class="text-muted small">Khám phá vẻ đẹp hoang sơ của bãi biển Ba Động, điểm đến hấp dẫn tại tỉnh Trà Vinh, Đồng bằng sông Cửu Long.</p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6>Khám phá</h6>
+                <ul class="list-unstyled small">
+                    <li><a class="text-muted text-decoration-none" asp-page="/Destinations/Index">Điểm tham quan</a></li>
+                    <li><a class="text-muted text-decoration-none" asp-page="/Services/Index">Dịch vụ trên biển</a></li>
+                    <li><a class="text-muted text-decoration-none" asp-page="/About">Giới thiệu Ba Động</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h6>Liên hệ</h6>
+                <p class="text-muted small">
+                    <i class="fas fa-map-marker-alt me-1"></i> Xã Trường Long Hòa, Huyện Duyên Hải, Tỉnh Trà Vinh<br/>
+                    <i class="fas fa-phone me-1"></i> 0294.123.456<br/>
+                    <i class="fas fa-envelope me-1"></i> info@bienbadongtravınh.vn
+                </p>
+            </div>
+        </div>
+        <hr class="border-secondary"/>
+        <p class="text-center text-muted small mb-0">© 2026 Du Lịch Biển Ba Động - Trà Vinh. All rights reserved.</p>
+    </div>
+</footer> *@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

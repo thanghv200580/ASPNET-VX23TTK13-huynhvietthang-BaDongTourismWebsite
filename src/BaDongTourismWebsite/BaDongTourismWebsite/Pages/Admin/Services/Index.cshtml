@@ -1,0 +1,92 @@
+@page
+@model BaDongTourismWebsite.Pages.Admin.Services.IndexModel
+@{
+    ViewData["Title"] = "Quản lý Dịch Vụ Biển";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Danh sách</span>
+            <h2 class="admin-page-title">Quản lý dịch vụ trên biển</h2>
+        </div>
+        <div class="admin-page-actions">
+            <a asp-page="/Admin/Services/Create" class="btn btn-admin-primary">
+                <i class="fas fa-plus me-2"></i>Thêm mới
+            </a>
+        </div>
+    </section>
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success admin-alert alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <section class="admin-card admin-card--table">
+        <header class="admin-card-header">
+            <h3>Danh sách dịch vụ</h3>
+        </header>
+        <div class="admin-card-body p-0">
+            <div class="table-responsive">
+                <table class="table-admin table align-middle">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên dịch vụ</th>
+                        <th>Giá</th>
+                        <th>Đơn vị giá</th>
+                        <th>Thứ tự</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Services.Any())
+                    {
+                        @foreach (var svc in Model.Services)
+                        {
+                            <tr>
+                                <td>@svc.Id</td>
+                                <td><strong>@svc.Name</strong></td>
+                                <td>@svc.Price.ToString("N0")đ</td>
+                                <td>@svc.PriceUnit</td>
+                                <td>@svc.DisplayOrder</td>
+                                <td>
+                                    @if (svc.IsActive)
+                                    {
+                                        <span class="badge-status badge-active">Hiển thị</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-status badge-inactive">Ẩn</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a asp-page="/Admin/Services/Edit" asp-route-id="@svc.Id" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-page="/Admin/Services/Delete" asp-route-id="@svc.Id" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">Chưa có dịch vụ nào.</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

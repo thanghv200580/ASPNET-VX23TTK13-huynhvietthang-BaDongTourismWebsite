@@ -42,5 +42,4 @@ public class Destination : BaseEntity
     
     public virtual ICollection<DestinationImage> Images { get; set; } = new List<DestinationImage>();
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
-    public virtual ICollection<TourDestination> TourDestinations { get; set; } = new List<TourDestination>();
 }

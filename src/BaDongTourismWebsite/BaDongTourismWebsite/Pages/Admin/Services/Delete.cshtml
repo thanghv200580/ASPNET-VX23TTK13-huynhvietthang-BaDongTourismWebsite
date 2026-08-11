@@ -1,0 +1,38 @@
+@page "{id:int}"
+@model BaDongTourismWebsite.Pages.Admin.Services.DeleteModel
+@{
+    ViewData["Title"] = "Xóa Dịch Vụ Biển";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Xác nhận xóa</span>
+            <h2 class="admin-page-title">Xóa dịch vụ biển</h2>
+        </div>
+    </section>
+
+    <div class="admin-card" style="max-width:600px;">
+        <div class="admin-card-body">
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Bạn có chắc chắn muốn xóa dịch vụ <strong>@Model.Service?.Name</strong>?
+            </div>
+            @if (Model.Service != null)
+            {
+                <dl class="row">
+                    <dt class="col-sm-4">Tên:</dt><dd class="col-sm-8">@Model.Service.Name</dd>
+                    <dt class="col-sm-4">Giá:</dt><dd class="col-sm-8">@Model.Service.Price.ToString("N0")đ @Model.Service.PriceUnit</dd>
+                </dl>
+            }
+            <form method="post">
+                <input type="hidden" asp-for="Service!.Id" />
+                <div class="d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-2"></i>Xóa</button>
+                    <a asp-page="/Admin/Services/Index" class="btn btn-secondary">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

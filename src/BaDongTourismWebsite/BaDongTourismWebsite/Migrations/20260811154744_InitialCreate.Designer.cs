@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaDongTourismWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260301100912_InitialCreate")]
+    [Migration("20260811154744_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,13 +25,77 @@ namespace BaDongTourismWebsite.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Accommodation", b =>
+            modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.BeachInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContactEmail")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ContactPhone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("CultureText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FoodText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HeroImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Location")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("MapEmbedUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("NatureText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OverviewText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subtitle")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TravelTipsText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BeachInfos", (string)null);
+                });
+
+            modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.BeachService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContactPhone")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -40,20 +104,14 @@ namespace BaDongTourismWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("MainImage")
                         .HasMaxLength(500)
@@ -64,26 +122,19 @@ namespace BaDongTourismWebsite.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal?>("PriceFrom")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(3,2)");
+                    b.Property<string>("PriceUnit")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Website")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Accommodations", (string)null);
+                    b.ToTable("BeachServices", (string)null);
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Booking", b =>
@@ -159,14 +210,11 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingCode")
-                        .IsUnique();
-
                     b.HasIndex("TourId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Category", b =>
@@ -204,7 +252,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Destination", b =>
@@ -270,11 +318,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("Name");
-
-                    b.HasIndex("Province");
-
-                    b.ToTable("Destinations", (string)null);
+                    b.ToTable("Destination");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.DestinationImage", b =>
@@ -313,7 +357,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasIndex("DestinationId");
 
-                    b.ToTable("DestinationImages", (string)null);
+                    b.ToTable("DestinationImage");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Payment", b =>
@@ -362,67 +406,7 @@ namespace BaDongTourismWebsite.Migrations
                     b.HasIndex("BookingId")
                         .IsUnique();
 
-                    b.HasIndex("TransactionId")
-                        .IsUnique();
-
-                    b.ToTable("Payments", (string)null);
-                });
-
-            modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Restaurant", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal?>("AveragePricePerPerson")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Cuisine")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("MainImage")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(3,2)");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Restaurants", (string)null);
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Review", b =>
@@ -474,7 +458,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Role", b =>
@@ -571,9 +555,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StartDate");
-
-                    b.ToTable("Tours", (string)null);
+                    b.ToTable("Tour");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.TourDestination", b =>
@@ -608,7 +590,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasIndex("TourId");
 
-                    b.ToTable("TourDestinations", (string)null);
+                    b.ToTable("TourDestination");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.TourSchedule", b =>
@@ -651,7 +633,7 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.HasIndex("TourId");
 
-                    b.ToTable("TourSchedules", (string)null);
+                    b.ToTable("TourSchedule");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.User", b =>
@@ -748,13 +730,13 @@ namespace BaDongTourismWebsite.Migrations
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.Tour", "Tour")
                         .WithMany("Bookings")
                         .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.User", "User")
                         .WithMany("Bookings")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Tour");
@@ -767,7 +749,7 @@ namespace BaDongTourismWebsite.Migrations
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.Category", "Category")
                         .WithMany("Destinations")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -799,13 +781,11 @@ namespace BaDongTourismWebsite.Migrations
                 {
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.Destination", "Destination")
                         .WithMany("Reviews")
-                        .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("DestinationId");
 
-                    b.HasOne("BaDongTourismWebsite.Entity.Entities.Tour", "Tour")
+                    b.HasOne("BaDongTourismWebsite.Entity.Entities.Tour", null)
                         .WithMany("Reviews")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TourId");
 
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.User", "User")
                         .WithMany("Reviews")
@@ -815,17 +795,15 @@ namespace BaDongTourismWebsite.Migrations
 
                     b.Navigation("Destination");
 
-                    b.Navigation("Tour");
-
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.TourDestination", b =>
                 {
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.Destination", "Destination")
-                        .WithMany("TourDestinations")
+                        .WithMany()
                         .HasForeignKey("DestinationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BaDongTourismWebsite.Entity.Entities.Tour", "Tour")
@@ -884,8 +862,6 @@ namespace BaDongTourismWebsite.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Reviews");
-
-                    b.Navigation("TourDestinations");
                 });
 
             modelBuilder.Entity("BaDongTourismWebsite.Entity.Entities.Role", b =>

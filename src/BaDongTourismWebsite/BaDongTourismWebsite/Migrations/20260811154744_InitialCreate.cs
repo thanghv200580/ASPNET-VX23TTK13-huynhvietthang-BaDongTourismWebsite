@@ -12,32 +12,55 @@ namespace BaDongTourismWebsite.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Accommodations",
+                name: "BeachInfos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Subtitle = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    HeroImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    OverviewText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NatureText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CultureText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TravelTipsText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FoodText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    MapEmbedUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ContactPhone = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ContactEmail = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BeachInfos", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BeachServices",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Website = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PriceUnit = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     MainImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    PriceFrom = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Rating = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
+                    ContactPhone = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    DisplayOrder = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Accommodations", x => x.Id);
+                    table.PrimaryKey("PK_BeachServices", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Category",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -52,31 +75,7 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Restaurants",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Cuisine = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    MainImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    AveragePricePerPerson = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Rating = table.Column<decimal>(type: "decimal(3,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Restaurants", x => x.Id);
+                    table.PrimaryKey("PK_Category", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,7 +96,7 @@ namespace BaDongTourismWebsite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tours",
+                name: "Tour",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -121,7 +120,7 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tours", x => x.Id);
+                    table.PrimaryKey("PK_Tour", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,7 +147,7 @@ namespace BaDongTourismWebsite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Destinations",
+                name: "Destination",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -170,17 +169,17 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Destinations", x => x.Id);
+                    table.PrimaryKey("PK_Destination", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Destinations_Categories_CategoryId",
+                        name: "FK_Destination_Category_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        principalTable: "Category",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TourSchedules",
+                name: "TourSchedule",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -196,17 +195,17 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TourSchedules", x => x.Id);
+                    table.PrimaryKey("PK_TourSchedule", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TourSchedules_Tours_TourId",
+                        name: "FK_TourSchedule_Tour_TourId",
                         column: x => x.TourId,
-                        principalTable: "Tours",
+                        principalTable: "Tour",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bookings",
+                name: "Booking",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -232,19 +231,19 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bookings", x => x.Id);
+                    table.PrimaryKey("PK_Booking", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Bookings_Tours_TourId",
+                        name: "FK_Booking_Tour_TourId",
                         column: x => x.TourId,
-                        principalTable: "Tours",
+                        principalTable: "Tour",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bookings_Users_UserId",
+                        name: "FK_Booking_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -277,7 +276,7 @@ namespace BaDongTourismWebsite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DestinationImages",
+                name: "DestinationImage",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -292,17 +291,17 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DestinationImages", x => x.Id);
+                    table.PrimaryKey("PK_DestinationImage", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DestinationImages_Destinations_DestinationId",
+                        name: "FK_DestinationImage_Destination_DestinationId",
                         column: x => x.DestinationId,
-                        principalTable: "Destinations",
+                        principalTable: "Destination",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviews",
+                name: "Review",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -312,29 +311,27 @@ namespace BaDongTourismWebsite.Migrations
                     Rating = table.Column<int>(type: "int", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    TourId = table.Column<int>(type: "int", nullable: true),
                     DestinationId = table.Column<int>(type: "int", nullable: true),
+                    TourId = table.Column<int>(type: "int", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.PrimaryKey("PK_Review", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reviews_Destinations_DestinationId",
+                        name: "FK_Review_Destination_DestinationId",
                         column: x => x.DestinationId,
-                        principalTable: "Destinations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Destination",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reviews_Tours_TourId",
+                        name: "FK_Review_Tour_TourId",
                         column: x => x.TourId,
-                        principalTable: "Tours",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Tour",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Reviews_Users_UserId",
+                        name: "FK_Review_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -342,7 +339,7 @@ namespace BaDongTourismWebsite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TourDestinations",
+                name: "TourDestination",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -356,23 +353,23 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TourDestinations", x => x.Id);
+                    table.PrimaryKey("PK_TourDestination", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TourDestinations_Destinations_DestinationId",
+                        name: "FK_TourDestination_Destination_DestinationId",
                         column: x => x.DestinationId,
-                        principalTable: "Destinations",
+                        principalTable: "Destination",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TourDestinations_Tours_TourId",
+                        name: "FK_TourDestination_Tour_TourId",
                         column: x => x.TourId,
-                        principalTable: "Tours",
+                        principalTable: "Tour",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "Payment",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -390,96 +387,69 @@ namespace BaDongTourismWebsite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.PrimaryKey("PK_Payment", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payments_Bookings_BookingId",
+                        name: "FK_Payment_Booking_BookingId",
                         column: x => x.BookingId,
-                        principalTable: "Bookings",
+                        principalTable: "Booking",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_BookingCode",
-                table: "Bookings",
-                column: "BookingCode",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bookings_TourId",
-                table: "Bookings",
+                name: "IX_Booking_TourId",
+                table: "Booking",
                 column: "TourId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_UserId",
-                table: "Bookings",
+                name: "IX_Booking_UserId",
+                table: "Booking",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DestinationImages_DestinationId",
-                table: "DestinationImages",
-                column: "DestinationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Destinations_CategoryId",
-                table: "Destinations",
+                name: "IX_Destination_CategoryId",
+                table: "Destination",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Destinations_Name",
-                table: "Destinations",
-                column: "Name");
+                name: "IX_DestinationImage_DestinationId",
+                table: "DestinationImage",
+                column: "DestinationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Destinations_Province",
-                table: "Destinations",
-                column: "Province");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_BookingId",
-                table: "Payments",
+                name: "IX_Payment_BookingId",
+                table: "Payment",
                 column: "BookingId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_TransactionId",
-                table: "Payments",
-                column: "TransactionId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reviews_DestinationId",
-                table: "Reviews",
+                name: "IX_Review_DestinationId",
+                table: "Review",
                 column: "DestinationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_TourId",
-                table: "Reviews",
+                name: "IX_Review_TourId",
+                table: "Review",
                 column: "TourId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_UserId",
-                table: "Reviews",
+                name: "IX_Review_UserId",
+                table: "Review",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TourDestinations_DestinationId",
-                table: "TourDestinations",
+                name: "IX_TourDestination_DestinationId",
+                table: "TourDestination",
                 column: "DestinationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TourDestinations_TourId",
-                table: "TourDestinations",
+                name: "IX_TourDestination_TourId",
+                table: "TourDestination",
                 column: "TourId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tours_StartDate",
-                table: "Tours",
-                column: "StartDate");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TourSchedules_TourId",
-                table: "TourSchedules",
+                name: "IX_TourSchedule_TourId",
+                table: "TourSchedule",
                 column: "TourId");
 
             migrationBuilder.CreateIndex(
@@ -503,46 +473,46 @@ namespace BaDongTourismWebsite.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Accommodations");
+                name: "BeachInfos");
 
             migrationBuilder.DropTable(
-                name: "DestinationImages");
+                name: "BeachServices");
 
             migrationBuilder.DropTable(
-                name: "Payments");
+                name: "DestinationImage");
 
             migrationBuilder.DropTable(
-                name: "Restaurants");
+                name: "Payment");
 
             migrationBuilder.DropTable(
-                name: "Reviews");
+                name: "Review");
 
             migrationBuilder.DropTable(
-                name: "TourDestinations");
+                name: "TourDestination");
 
             migrationBuilder.DropTable(
-                name: "TourSchedules");
+                name: "TourSchedule");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");
 
             migrationBuilder.DropTable(
-                name: "Bookings");
+                name: "Booking");
 
             migrationBuilder.DropTable(
-                name: "Destinations");
+                name: "Destination");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Tours");
+                name: "Tour");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Category");
         }
     }
 }

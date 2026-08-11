@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Admin - Du Lịch Ba Đồng</title>
+    <title>@ViewData["Title"] - Admin - Biển Ba Động</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
@@ -24,7 +24,7 @@
             <a asp-page="/Admin/Dashboard" class="admin-brand-link">
                 <span class="admin-brand-icon"><i class="fas fa-compass"></i></span>
                 <span class="admin-brand-text">
-                    <strong>Ba Đồng</strong>
+                    <strong>Ba Động</strong>
                     <small>Bảng quản trị</small>
                 </span>
             </a>
@@ -36,20 +36,15 @@
                 <span class="admin-nav-icon"><i class="fas fa-gauge"></i></span>
                 <span>Dashboard</span>
             </a>
-            <a asp-page="/Admin/Destinations/Index"
-               class="admin-nav-link @(currentPage?.Contains("/Pages/Admin/Destinations", StringComparison.OrdinalIgnoreCase) == true ? "active" : string.Empty)">
-                <span class="admin-nav-icon"><i class="fas fa-map-location"></i></span>
-                <span>Điểm du lịch</span>
+            <a asp-page="/Admin/BeachInfoAdmin/Edit"
+               class="admin-nav-link @(currentPage?.Contains("/Pages/Admin/BeachInfoAdmin", StringComparison.OrdinalIgnoreCase) == true ? "active" : string.Empty)">
+                <span class="admin-nav-icon"><i class="fas fa-umbrella-beach"></i></span>
+                <span>Thông tin Biển Ba Động</span>
             </a>
-            <a asp-page="/Admin/Tours/Index"
-               class="admin-nav-link @(currentPage?.Contains("/Pages/Admin/Tours", StringComparison.OrdinalIgnoreCase) == true ? "active" : string.Empty)">
-                <span class="admin-nav-icon"><i class="fas fa-route"></i></span>
-                <span>Tours</span>
-            </a>
-            <a asp-page="/Admin/Bookings/Index"
-               class="admin-nav-link @(currentPage?.Contains("/Pages/Admin/Bookings", StringComparison.OrdinalIgnoreCase) == true ? "active" : string.Empty)">
-                <span class="admin-nav-icon"><i class="fas fa-calendar-check"></i></span>
-                <span>Đơn đặt tour</span>
+            <a asp-page="/Admin/Services/Index"
+               class="admin-nav-link @(currentPage?.Contains("/Pages/Admin/Services", StringComparison.OrdinalIgnoreCase) == true ? "active" : string.Empty)">
+                <span class="admin-nav-icon"><i class="fas fa-water"></i></span>
+                <span>Dịch vụ biển</span>
             </a>
         </nav>
 
@@ -69,7 +64,7 @@
         <header class="admin-topbar">
             <div class="admin-topbar-title">
                 <h1>@ViewData["Title"]</h1>
-                <p>Quản lý và theo dõi hệ thống du lịch Ba Đồng.</p>
+                <p>Quản lý hệ thống website Biển Ba Động - Trà Vinh.</p>
             </div>
             <div class="admin-topbar-user">
                 <div class="admin-user-avatar">
@@ -99,4 +94,3 @@
 
 </body>
 </html>
-

@@ -1,26 +1,27 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BaDongTourismWebsite.DAL.UnitOfWork;
+using BaDongTourismWebsite.BLL.Services;
 using BaDongTourismWebsite.Entity.Entities;
 
 namespace BaDongTourismWebsite.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<IndexModel> _logger;
+    private readonly IBeachInfoService _beachInfoService;
+    private readonly IBeachServiceService _beachServiceService;
 
-    public IndexModel(IUnitOfWork unitOfWork, ILogger<IndexModel> logger)
+    public IndexModel(IBeachInfoService beachInfoService, IBeachServiceService beachServiceService)
     {
-        _unitOfWork = unitOfWork;
-        _logger = logger;
+        _beachInfoService = beachInfoService;
+        _beachServiceService = beachServiceService;
     }
 
-    public IEnumerable<Destination> FeaturedDestinations { get; set; } = new List<Destination>();
-    public IEnumerable<Tour> PopularTours { get; set; } = new List<Tour>();
+    public BeachInfo? Info { get; set; }
+    public IEnumerable<BeachService> FeaturedServices { get; set; } = new List<BeachService>();
 
     public async Task OnGetAsync()
     {
-        FeaturedDestinations = await _unitOfWork.Destinations.GetFeaturedDestinationsAsync(6);
-        PopularTours = await _unitOfWork.Tours.GetFeaturedToursAsync(4);
+        Info = await _beachInfoService.GetBeachInfoAsync();
+        FeaturedServices = (await _beachServiceService.GetActiveServicesAsync()).Take(4);
     }
 }
+

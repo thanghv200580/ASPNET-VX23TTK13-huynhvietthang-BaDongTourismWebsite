@@ -42,9 +42,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add Services
 builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IAuthService, BaDongTourismWebsite.BLL.Services.AuthService>();
-builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IDestinationService, BaDongTourismWebsite.BLL.Services.DestinationService>();
-builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.ITourService, BaDongTourismWebsite.BLL.Services.TourService>();
-builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IBookingService, BaDongTourismWebsite.BLL.Services.BookingService>();
+builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IBeachServiceService, BaDongTourismWebsite.BLL.Services.BeachServiceService>();
+builder.Services.AddScoped<BaDongTourismWebsite.BLL.Services.IBeachInfoService, BaDongTourismWebsite.BLL.Services.BeachInfoService>();
 
 // Add DbSeeder
 builder.Services.AddScoped<DbSeeder>();

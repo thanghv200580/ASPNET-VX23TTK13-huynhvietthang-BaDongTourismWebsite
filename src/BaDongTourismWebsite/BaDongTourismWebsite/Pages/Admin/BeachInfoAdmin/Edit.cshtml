@@ -1,0 +1,93 @@
+@page
+@model BaDongTourismWebsite.Pages.Admin.BeachInfoEditModel
+@{
+    ViewData["Title"] = "Chỉnh sửa thông tin Biển Ba Động";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="admin-page">
+    <section class="admin-page-header">
+        <div class="admin-page-heading">
+            <span class="admin-page-subtitle">Quản trị nội dung</span>
+            <h2 class="admin-page-title">Thông tin Biển Ba Động</h2>
+        </div>
+    </section>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="admin-card">
+        <div class="admin-card-body">
+            <form method="post">
+                <input type="hidden" asp-for="Info.Id" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Info.Title" class="form-label fw-semibold">Tiêu đề trang</label>
+                        <input asp-for="Info.Title" class="form-control" placeholder="Biển Ba Động - Trà Vinh" />
+                        <span asp-validation-for="Info.Title" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Info.Subtitle" class="form-label fw-semibold">Slogan / Mô tả ngắn</label>
+                        <input asp-for="Info.Subtitle" class="form-control" placeholder="Bãi biển hoang sơ đẹp nhất..." />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Info.Location" class="form-label fw-semibold">Địa chỉ</label>
+                        <input asp-for="Info.Location" class="form-control" placeholder="Xã Trường Long Hòa, Huyện Duyên Hải, Tỉnh Trà Vinh" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Info.HeroImageUrl" class="form-label fw-semibold">URL ảnh bìa (Hero)</label>
+                        <input asp-for="Info.HeroImageUrl" class="form-control" placeholder="https://..." />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Info.ContactPhone" class="form-label fw-semibold">Số điện thoại</label>
+                        <input asp-for="Info.ContactPhone" class="form-control" placeholder="0294.xxx.xxx" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Info.ContactEmail" class="form-label fw-semibold">Email</label>
+                        <input asp-for="Info.ContactEmail" class="form-control" placeholder="info@badong.com" />
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Info.MapEmbedUrl" class="form-label fw-semibold">URL nhúng bản đồ Google Maps (iframe src)</label>
+                        <input asp-for="Info.MapEmbedUrl" class="form-control" placeholder="https://www.google.com/maps/embed?pb=..." />
+                    </div>
+
+                    <div class="col-12"><hr><h5 class="fw-bold text-primary">Nội dung các tab</h5></div>
+
+                    <div class="col-12">
+                        <label asp-for="Info.OverviewText" class="form-label fw-semibold"><i class="fas fa-info-circle me-1"></i>Tổng quan</label>
+                        <textarea asp-for="Info.OverviewText" class="form-control" rows="4" placeholder="Mô tả tổng quan về bãi biển Ba Động..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Info.NatureText" class="form-label fw-semibold"><i class="fas fa-leaf me-1"></i>Thiên nhiên & Sinh thái</label>
+                        <textarea asp-for="Info.NatureText" class="form-control" rows="4" placeholder="Mô tả về thiên nhiên, sinh thái..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Info.CultureText" class="form-label fw-semibold"><i class="fas fa-torii-gate me-1"></i>Văn hóa & Lịch sử</label>
+                        <textarea asp-for="Info.CultureText" class="form-control" rows="4" placeholder="Mô tả về văn hóa, lịch sử địa phương..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Info.TravelTipsText" class="form-label fw-semibold"><i class="fas fa-map-signs me-1"></i>Kinh nghiệm du lịch</label>
+                        <textarea asp-for="Info.TravelTipsText" class="form-control" rows="4" placeholder="Mẹo di chuyển, thời điểm đến, lưu ý..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="Info.FoodText" class="form-label fw-semibold"><i class="fas fa-utensils me-1"></i>Ẩm thực đặc sản</label>
+                        <textarea asp-for="Info.FoodText" class="form-control" rows="4" placeholder="Mô tả về ẩm thực, đặc sản địa phương..."></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-admin-primary">
+                        <i class="fas fa-save me-2"></i>Lưu thay đổi
+                    </button>
+                    <a asp-page="/Admin/Dashboard" class="btn btn-secondary">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
